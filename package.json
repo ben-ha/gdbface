@@ -1,0 +1,37 @@
+{
+  "name": "gdbface",
+  "version": "1.0.0",
+  "description": "GDB Frontend",
+  "main": "gdbface.js",
+  "scripts": {
+    "start": "webpack-dev-server --content-base ./web --hot"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://benha1024@bitbucket.org/benha1024/gdbface.git"
+  },
+  "author": "Benha",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/benha1024/gdbface#readme",
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "bootstrap-webpack": "0.0.5",
+    "exports-loader": "^0.6.3",
+    "express": "^4.14.0",
+    "extract-text-webpack-plugin": "^1.0.1",
+    "imports-loader": "^0.7.0",
+    "less": "^2.7.1",
+    "less-loader": "^2.2.3",
+    "react": "^15.4.1",
+    "react-dom": "^15.4.1",
+    "webpack": "^1.14.0",
+    "webpack-dev-server": "^1.16.2"
+  },
+  "devDependencies": {
+    "bootstrap-webpack": "0.0.5",
+    "css-loader": "^0.26.1",
+    "file-loader": "^0.9.0",
+    "style-loader": "^0.13.1",
+    "url-loader": "^0.5.7"
+  }
+}
