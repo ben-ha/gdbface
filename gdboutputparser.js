@@ -53,7 +53,7 @@ class GDBOutputParser
     {
 	let variable = result.trim();
 	let varname = "";
-
+	
 	if (!var_in_list)
 	{
 	    variable = this._GetVariableInfo(variable);
@@ -112,7 +112,7 @@ class GDBOutputParser
 	    let token_end_index = this._GetNextCommaToken(list_str);
 	    list.push(this._BuildObjectFromResultRecords(true, list_str.substr(0, token_end_index)));
 
-	    list_str = list_str.substr(token_end_index);
+	    list_str = list_str.substr(token_end_index + 1);
 	}
 
 	return list;
@@ -139,9 +139,11 @@ class GDBOutputParser
 	    }
 	    
 	    if (str[i] == '{')
-		i = this._GetEndOfDictionary(str);
+		i += this._GetEndOfDictionary(str.substr(i));
 	    else if (str[i] == '[')
-		i = this._GetEndOfList(str);
+	    {
+		i += this._GetEndOfList(str.substr(i));
+	    }
 	    else
 		++i;
 	} while(i < str.length && str[i] != ',');
@@ -184,19 +186,21 @@ class GDBOutputParser
 	    
 	    if (str[i] == closing_char)
 		count--;
-
+	    
 	    ++i;
+	    
 	} while(count > 0 && i != str.length);
 
 	if (count != 0)
 	    throw "Bad parsing";
 
+	console.log("Returning length=" + str.length);
 	return i;
     }
     
     _GetVariableInfo(text)
     {
-	let splitted = text.match(/([a-z0-9]+)=(.*)/);
+	let splitted = text.match(/([\-a-z0-9]+)=(.*)/);
 	return [splitted[1],splitted[2]];
     }
 }
