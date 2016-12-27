@@ -3,6 +3,9 @@
 
 const GDB_RESULT_RECORD = 0;
 const GDB_ERROR = 1;
+const GDB_INFERIOR_OUTPUT = 2;
+const GDB_ASYNC_OUTPUT = 3;
+const GDB_NOP = 4;
 
 class GDBOutput
 {
@@ -22,18 +25,47 @@ class GDBOutputParser
 
     Parse(output)
     {
-	let matched = output.match(/([\^*~@&\+=])([a-z]+),(.*)/)
-	let rescode = matched[1];
-	let restext = matched[2];
-	let result = matched[3];
+	let output_trimmed = output.trim();
+
+	let parts = this._GetGDBOutputParts(output_trimmed);
+	let rescode = "INFERIOR";
+	let restext = "";
+	let result = "";
+	
+	if (parts != null)
+	{
+	    rescode = parts[1];
+	    restext = parts[2];
+	    result = parts[3];
+	}
 
 	switch (rescode)
 	{
 	    case '^':
 	        return this._HandleResultRecords(restext, result);
+	    case "INFERIOR":
+	        return new GDBOutput(GDB_INFERIOR_OUTPUT, output);
 	    default:
-	        throw "Unhandled GDB output";
+	        return new GDBOutput(GDB_ASYNC_OUTPUT, this._HandleAsyncOutput(restext, result));
 	}
+    }
+
+    IsGDBCommand(output)
+    {
+	let matched = output.match(/^[\^*~@&\+=].*/);
+
+	return matched != null;
+    }
+    
+    _GetGDBOutputParts(trimmed_output)
+    {
+	let matched = trimmed_output.match(/^([\^*~@&\+=])([a-z-]+),(.*)/);
+	if (matched == null)
+	{
+	    matched = trimmed_output.match(/^([\^*~@&\+=])([a-z-]+)/);
+	}
+
+	return matched;
     }
 
     _HandleResultRecords(restext, result)
@@ -44,6 +76,28 @@ class GDBOutputParser
 	    return new GDBOutput(GDB_RESULT_RECORD, this._HandleDoneResult(result));
     }
 
+    _HandleAsyncOutput(restext, result)
+    {
+	let obj = {};
+	obj[restext] = this._BuildObjectFromAsyncRecords(result);
+	return obj;
+    }
+
+    _BuildObjectFromAsyncRecords(result)
+    {
+	let dict = {};
+
+	while(result != "")
+	{
+	    let token_end_index = this._GetNextCommaToken(result);
+	    Object.assign(dict, this._BuildObjectFromResultRecords(false, result.substr(0, token_end_index)));
+
+	    result = result.substr(token_end_index);
+	}
+
+	return dict;	
+    }
+    
     _HandleDoneResult(result)
     {
 	return this._BuildObjectFromResultRecords(false, result);
@@ -51,6 +105,9 @@ class GDBOutputParser
 
     _BuildObjectFromResultRecords(var_in_list, result)
     {
+	if (result == undefined || result == null)
+	    return "";
+	
 	let variable = result.trim();
 	let varname = "";
 	
@@ -194,7 +251,6 @@ class GDBOutputParser
 	if (count != 0)
 	    throw "Bad parsing";
 
-	console.log("Returning length=" + str.length);
 	return i;
     }
     

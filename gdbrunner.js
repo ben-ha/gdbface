@@ -1,35 +1,14 @@
 "use strict"
 
+// TODO: Support program output
+
 const spawn = require('child_process').spawn;
 const util = require('util');
+const process = require('process');
+const GDBOutputParser = require('./gdboutputparser.js');
 
-const GDB_PROMPT = "(gdb) \n";
+const GDB_PROMPT = "(gdb) ";
 const EventEmitter = require("events");
-
-class GDBCommand
-{
-    constructor(command, args, callback)
-    {
-	this._command = command;
-	this._args = args;
-	this._callback = callback;
-    }
-
-    GetCommand()
-    {
-	return this._command;
-    }
-
-    GetArgs()
-    {
-	return this._args;
-    }
-
-    GetCallback()
-    {
-	return this._callback;
-    }
-}
 
 class GDBRunner
 {
@@ -38,100 +17,70 @@ class GDBRunner
 	this._path = path;
 	this._current_output = "";
 	this._event_emitter = new EventEmitter();
-	this._event_emitter.on('finished_command', this.OnFinishedCommand.bind(this));
-	this._event_emitter.on('command_available', this.OnCommandAvailable.bind(this));
-	this._commands = [];
-	this._running = false;
+	this._gdb_parser = new GDBOutputParser.GDBOutputParser();
+	this._saved_data = "";
+	this._pid =-1;
     }
 
-    Run()
+    Run(output_callback)
     {
+	this._output_callback = output_callback;
 	this._process = spawn("gdb", ["-i=mi", this._path]);
-	this._SetStateForInitialOutput();
 	this._process.stdout.on("data", this.ReadOutput.bind(this));
     }
     
-    RunCommand(command, args, callback)
+    RunCommand(command, args)
     {
-	this._commands.push(new GDBCommand(command, args, callback));
-	this.CheckCommandAvailable();
+	this._process.stdin.write(util.format("%s %s\r\n", command, args));
     }
 
-    // This is required so we consume all the garbage gdb throws at us when started
-    _SetStateForInitialOutput()
+    _ProcessGDBOutput(gdb_output)
     {
-	this._running = true;
-	this._commands.push(new GDBCommand("", "", undefined));
+	if (gdb_output == undefined)
+	    return;
+	
+	if (gdb_output.Data != null)
+	{
+	    if(gdb_output.Data['thread-group-started'] != undefined)
+	    {
+		this._pid = gdb_output.Data['thread-group-started']['pid'];
+	    }
+	}
     }
 
     ReadOutput(data)
     {
-	//TODO: Check if in running command mode to support async records output from gdb
-	let raise_event = false;
-	data = data.toString();
-	if (this.IsCommandFinished(data))
+	this._saved_data += data;
+
+	while (this._saved_data.indexOf("\n") != -1) //new line!
 	{
-	    data = this.FinalizeCommand(data);
-	    raise_event = true;
+	    let line = this._saved_data.substr(0, this._saved_data.indexOf("\n"));
+	    if (line != GDB_PROMPT)
+	    {
+		let output = this._gdb_parser.Parse(line);
+		this._ProcessGDBOutput(output);
+		this._output_callback(output);
+	    }
+
+	    this._saved_data = this._saved_data.substr(this._saved_data.indexOf("\n") + 1);
+	}
+
+	if (!this._gdb_parser.IsGDBCommand(this._saved_data))
+	{
+	    // Must be inferior output. Parse it.
+	    this._output_callback(this._gdb_parser.Parse(this._saved_data));
+	    this._saved_data = "";
+	}
+    }
+
+    Break()
+    {
+	if (this._pid == -1)
+	{
+	    return;
 	}
 	
-	this._current_output += data;
-	if (raise_event)
-	    this._event_emitter.emit('finished_command');
-    }
-
-    IsCommandFinished(data)
-    {
-	return data.endsWith(GDB_PROMPT);
-    }
-
-    FinalizeCommand(data)
-    {
-	if (data.endsWith(GDB_PROMPT))
-	    return data.replace(GDB_PROMPT, "");
-
-	return data;
-    }
-
-    OnFinishedCommand()
-    {
-	let current_command = this._commands.shift();
-	if (current_command != undefined)
-	{
-	    let callback = current_command.GetCallback();
-
-	    if (callback != undefined)
-	    {
-		//TODO: maybe setTimeout here?
-		callback(this._current_output);
-	    }
-	}
-	this._running = false;
-
-	this.CheckCommandAvailable();
-    }
-
-    OnCommandAvailable()
-    {
-	if (this._running)
-	    return;
-
-	this.SendNextCommand();
-    }
-
-    CheckCommandAvailable()
-    {
-	if (this._commands.length > 0)
-	    this._event_emitter.emit('command_available');
-    }
-
-    SendNextCommand()
-    {
-	const current_command = this._commands[0];
-	this._running = true;
-	this._current_output = "";
-
-	this._process.stdin.write(util.format("%s %s\r\n", current_command.GetCommand(), current_command.GetArgs())); 
+	process.kill(this._pid, "SIGINT");
     }
 };
 
