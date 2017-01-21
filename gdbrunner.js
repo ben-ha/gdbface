@@ -7,8 +7,8 @@ const util = require('util');
 const process = require('process');
 const pty = require('pty.js');
 const tty = require('tty');
+const API = require('./API.js');
 const GDBOutputParser = require('./gdboutputparser.js');
-
 const GDB_PROMPT = "(gdb) ";
 const EventEmitter = require("events");
 
@@ -30,7 +30,7 @@ class GDBRunner
     Run(output_callback)
     {
 	this._AllocatePTYForProgramConsole();
-	this._program_pty_reader.on("data", this.OnProgramConsoleOutput.bind(this));
+	
 	this._output_callback = output_callback;
 	this._process = spawn("gdb", ["-i=mi", "-tty=" + this._pty.pty, this._path]);
 	this._process.stdout.on("data", this.ReadOutput.bind(this));
@@ -48,10 +48,8 @@ class GDBRunner
 
     _AllocatePTYForProgramConsole()
     {
-	this._pty = pty.open(80, 25);
-	this._program_pty_reader = new tty.ReadStream(this._pty.slave.fd);
-	this._program_pty_writer = new tty.WriteStream(this._pty.master.fd);
-	
+	this._pty = pty.Terminal.open(80, 25);
+	this._pty.master.on("data", this.OnProgramConsoleOutput.bind(this));
     }
 
     _ProcessGDBOutput(gdb_output)
@@ -70,8 +68,7 @@ class GDBRunner
 
     OnProgramConsoleOutput(data)
     {
-	console.log("Called!\n");
-	this._output_callback({ProgramConsole : data.toString()}); 
+	this._output_callback(new GDBOutputParser.GDBOutput(API.results.GDB_INFERIOR_OUTPUT, data.toString())); 
     }
     
     ReadOutput(data)

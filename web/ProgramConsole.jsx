@@ -2,7 +2,7 @@ import React from 'react';
 import {RegisterDataStoreCallback} from './DataStore.js';
 import PlainConsole from './PlainConsole.jsx';
 
-class GDBConsole extends React.Component
+class ProgramConsole extends React.Component
 {
     constructor(props)
     {
@@ -14,11 +14,9 @@ class GDBConsole extends React.Component
 	   return (
 		<div className="form-group">
 		    <PlainConsole Output="ProgramConsoleOutput" />
-		    <label for="console_input">GDB:</label>
-		    <input type="text" className="form-control" id="console_input" />
 		    </div>
 		    );
 	}
 }
 
-export default GDBConsole;
+export default ProgramConsole;

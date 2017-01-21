@@ -39,8 +39,6 @@ class GDBOutputParser
 	{
 	    case '^':
 	        return this._HandleResultRecords(restext, result);
-	    case "INFERIOR":
-	        return new GDBOutput(API.results.GDB_INFERIOR_OUTPUT, output);
 	    default:
 	        return new GDBOutput(API.results.GDB_ASYNC_OUTPUT, this._HandleAsyncOutput(restext, result));
 	}

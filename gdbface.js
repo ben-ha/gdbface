@@ -4,7 +4,7 @@ var engine = require("./engine.js");
 
 var port = 5555;
 
-engine.run(port, "/home/shoshan/a.out", "");
+engine.run(port, "/root/a.out", "");
 
 //const spawn = require('child_process').spawn;
 

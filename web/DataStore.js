@@ -1,4 +1,5 @@
 import {RegisterDispatcherCallback} from './Dispatcher.js';
+import {results} from '../API.js';
 
 var _datastore = null;
 
@@ -74,8 +75,8 @@ class DataStore
 
     _GetConsoleOutput(data)
     {
-	if (data.ProgramConsole != undefined)
-	    this.Store.ProgramConsoleOutput += data.ProgramConsole;
+	if (data.Type == results.GDB_INFERIOR_OUTPUT)
+	    this.Store.ProgramConsoleOutput += data.Data;
     }
 
     _GetProgramStateData(data)

@@ -1,6 +1,6 @@
 import React from 'react';
 import GDBConsole from './GDBConsole.jsx';
-
+import ProgramConsole from './ProgramConsole.jsx';
 class ConsoleView extends React.Component
 {
 	render()
@@ -13,8 +13,8 @@ class ConsoleView extends React.Component
 		   </ul>
 
 	           <div className="tab-content">
-		   <div id="gdbconsole" className="tab-pane active">
-		   <GDBConsole />
+		   <div id="programconsole" className="tab-pane active">
+		   <ProgramConsole />
 		   </div>
 		    </div>
 		    </div>
