@@ -16,6 +16,11 @@ class PlainConsole extends React.Component
 	this.setState({output : store[this.store_member]});
     }
 
+    _OnNewLine(line)
+    {
+
+    }
+
     render()
     {
 	   return (

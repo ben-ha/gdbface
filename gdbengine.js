@@ -78,6 +78,7 @@ class GDBEngine
 
     SendConsoleInput(command)
     {
+	console.log("HERE!");
 	this._gdb_runner.SendConsoleInput(command);
     }
 

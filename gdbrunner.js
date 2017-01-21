@@ -22,8 +22,6 @@ class GDBRunner
 	this._gdb_parser = new GDBOutputParser.GDBOutputParser();
 	this._saved_data = "";
 	this._pty = null;
-	this._program_pty_reader = null;
-	this._program_pty_writer = null;
 	this._pid =-1;
     }
 
@@ -38,7 +36,7 @@ class GDBRunner
 
     SendConsoleInput(command)
     {
-	this._program_pty_writer.write(command);
+	this._pty.master.write(command);
     }
     
     RunCommand(command, args)
