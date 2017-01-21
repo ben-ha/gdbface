@@ -1,11 +1,7 @@
 "use strict"
 // TODO: Add escaping support? Currently OMD
 
-const GDB_RESULT_RECORD = 0;
-const GDB_ERROR = 1;
-const GDB_INFERIOR_OUTPUT = 2;
-const GDB_ASYNC_OUTPUT = 3;
-const GDB_NOP = 4;
+var API = require('./API.js');
 
 class GDBOutput
 {
@@ -44,9 +40,9 @@ class GDBOutputParser
 	    case '^':
 	        return this._HandleResultRecords(restext, result);
 	    case "INFERIOR":
-	        return new GDBOutput(GDB_INFERIOR_OUTPUT, output);
+	        return new GDBOutput(API.results.GDB_INFERIOR_OUTPUT, output);
 	    default:
-	        return new GDBOutput(GDB_ASYNC_OUTPUT, this._HandleAsyncOutput(restext, result));
+	        return new GDBOutput(API.results.GDB_ASYNC_OUTPUT, this._HandleAsyncOutput(restext, result));
 	}
     }
 
@@ -59,10 +55,10 @@ class GDBOutputParser
     
     _GetGDBOutputParts(trimmed_output)
     {
-	let matched = trimmed_output.match(/^([\^*~@&\+=])([a-z-]+),(.*)/);
+	let matched = trimmed_output.match(/^([\^*~@&\+=])([A-Za-z-]+),(.*)/);
 	if (matched == null)
 	{
-	    matched = trimmed_output.match(/^([\^*~@&\+=])([a-z-]+)/);
+	    matched = trimmed_output.match(/^([\^*~@&\+=])([A-Za-z-]+)/);
 	}
 
 	return matched;
@@ -71,9 +67,12 @@ class GDBOutputParser
     _HandleResultRecords(restext, result)
     {
 	if (restext == "error")
-	    return new GDBOutput(GDB_ERROR, result);
+	    return new GDBOutput(API.results.GDB_ERROR, result);
 	if (restext == "done")
-	    return new GDBOutput(GDB_RESULT_RECORD, this._HandleDoneResult(result));
+	    return new GDBOutput(API.results.GDB_RESULT_RECORD, this._HandleDoneResult(result));
+
+	if (restext == "running")
+	    return new GDBOutput(API.results.GDB_INFERIOR_RUNNING, null);
     }
 
     _HandleAsyncOutput(restext, result)
@@ -107,15 +106,16 @@ class GDBOutputParser
     {
 	if (result == undefined || result == null)
 	    return "";
-	
+
 	let variable = result.trim();
 	let varname = "";
 	
-	if (!var_in_list)
+	let var_info = this._GetVariableInfo(variable);
+
+	if (var_info != null)
 	{
-	    variable = this._GetVariableInfo(variable);
-	    varname = variable[0];
-	    variable = variable[1];
+	    varname = var_info[0];
+	    variable = var_info[1];
 	}
 
 	let obj = null;
@@ -167,7 +167,12 @@ class GDBOutputParser
 	while(list_str != "")
 	{
 	    let token_end_index = this._GetNextCommaToken(list_str);
-	    list.push(this._BuildObjectFromResultRecords(true, list_str.substr(0, token_end_index)));
+	    let obj = this._BuildObjectFromResultRecords(true, list_str.substr(0, token_end_index));
+
+	    if (obj != null) // I observed it cannot be
+	    {
+		list.push(obj);
+	    }
 
 	    list_str = list_str.substr(token_end_index + 1);
 	}
@@ -256,12 +261,12 @@ class GDBOutputParser
     
     _GetVariableInfo(text)
     {
-	let splitted = text.match(/([\-a-z0-9]+)=(.*)/);
+	let splitted = text.match(/^,?([\-A-Za-z0-9]+)=(.*)/);
+	if (splitted == null)
+	    return null;
 	return [splitted[1],splitted[2]];
     }
 }
 
 module.exports.GDBOutputParser = GDBOutputParser;
 module.exports.GDBOutput = GDBOutput;
-module.exports.GDB_ERROR = GDB_ERROR;
-module.exports.GDB_RESULT_RECORD = GDB_RESULT_RECORD;

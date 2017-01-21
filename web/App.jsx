@@ -2,14 +2,28 @@ import React from 'react';
 import ControlKeys from './ControlKeys.jsx';
 import TopBar from './TopBar.jsx';
 import Dashboard from './Dashboard.jsx';
+import {InitDispatcher, GetDispatcher} from './Dispatcher.js';
+import {InitDataStore} from './DataStore.js';
+import {InitUIProxy} from './UIProxy.js';
+import GDBActions from './GDBActions.js';
 
 class App extends React.Component {
-   render() {
+      constructor(props)
+      {
+	super(props);
+	InitDispatcher();
+	InitDataStore(GetDispatcher());
+	InitUIProxy();
+	GDBActions.GetFullInfo();
+      }
+
+      render() {
       return (
-      	 <div>
+      	 <div style={{"height": "100%"}}>
          <TopBar />
          <ControlKeys />
-	 <Dashboard />
+	 <hr />
+	 <Dashboard   />
 	 </div>
       );
    }

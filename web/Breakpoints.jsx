@@ -1,37 +1,38 @@
 import React from 'react';
+import Breakpoint from './Breakpoint.jsx';
+import {RegisterDataStoreCallback} from './DataStore.js';
 
 class Breakpoints extends React.Component {
 
       constructor(props)
       {
-	super(props);
-	this.state = {"breakpoints": []};
+	  super(props);
+	  RegisterDataStoreCallback(this._OnDataStoreChanged.bind(this));
+	  this.state = {breakpoints : []};
       }
 
-      OnGDBInfoReceived(info)
-      {
-	//TODO: Add breakpoints
+      _OnDataStoreChanged(data)
+    {
+	this.setState({breakpoints: data.Breakpoints});
       }
 
-      AddBreakpoint(bpt)
-      {
-	this.state["breakpoints"].push(bpt);	
-      }
-
-      render() {
+    render() {
       	return (
 
 	  <div className="table">
 	       <thead>
 		<tr>
-		  <th>ID</th>
+		  <th>#</th>
 		  <th>Address</th>
 		  <th>Function</th>
-		  <th>Enabled</th>
+		<th>Active</th>
+		<th>Remove</th>
 		 </tr>
 		</thead>
 		<tbody>
-		
+		{
+		    this.state.breakpoints.map(function (bp) { return (<Breakpoint key={bp.number+bp.addr+bp.func+bp.file+bp.line+bp.enabled} num={bp.number} address={bp.addr} func={bp.func + "@" + bp.file +":" +bp.line} enabled={bp.enabled == "y"} />) })
+		}
 		</tbody>
 	 </div>
         );

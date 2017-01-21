@@ -6,7 +6,20 @@ var actions = {
     BREAK_DEBUGEE : "break-debugee",
     STEP_INTO : "step-into",
     STEP_OVER : "step-over",
-    RESUME_DEBUGEE : "resume-debugee"
+    RESUME_DEBUGEE : "resume-debugee",
+    ADD_BREAKPOINT_FUNCNAME : "add-breakpoint-funcname",
+    ADD_BREAKPOINT_SOURCE : "add-breakpoint-source",
+    GET_BREAKPOINT_LIST : "get-breakpoints",
+    DISABLE_BREAKPOINT : "disable-breakpoint",
+    ENABLE_BREAKPOINT : "enable-breakpoint",
+    GET_SOURCE_FILE : "get-sourcefile", 
+    GET_SOURCES_LIST : "get-sources-list",
+    REMOVE_BREAKPOINT : "remove-breakpoint",
+    SEND_CONSOLE_PROGRAM_INPUT : "send-console-input",
+}
+
+var uiproxyevents = {
+    ON_OPEN_SOURCE_FILE : "onopensource",
 }
 
 var results =
@@ -16,7 +29,9 @@ var results =
 	GDB_INFERIOR_OUTPUT : 2,
 	GDB_ASYNC_OUTPUT : 3,
 	GDB_NOP : 4,
-	GDB_INFERIOR_RUNNING : 5
+	GDB_INFERIOR_RUNNING : 5,
+	GDB_ENGINE_RESULT :6,
+	GDB_ENGINE_ERROR : 7,
     }
 
 class API
@@ -48,4 +63,5 @@ class API
 
 module.exports = API;
 module.exports.actions = actions;
+module.exports.uiproxyevents = uiproxyevents;
 module.exports.results = results;

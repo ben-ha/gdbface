@@ -26,12 +26,9 @@ function RegisterDispatcherCallback(callback)
 
 class Dispatcher
 {
-	constructor(server_location)
+	constructor()
 	{
-		this.sock = io();
-
-		this.sock.on("response", function(msg) {
-		   console.log(msg); });		
+		this.sock = io();		
 	}
 
 	RegisterCallback(callback)

@@ -5,6 +5,8 @@
 const spawn = require('child_process').spawn;
 const util = require('util');
 const process = require('process');
+const pty = require('pty.js');
+const tty = require('tty');
 const GDBOutputParser = require('./gdboutputparser.js');
 
 const GDB_PROMPT = "(gdb) ";
@@ -19,19 +21,37 @@ class GDBRunner
 	this._event_emitter = new EventEmitter();
 	this._gdb_parser = new GDBOutputParser.GDBOutputParser();
 	this._saved_data = "";
+	this._pty = null;
+	this._program_pty_reader = null;
+	this._program_pty_writer = null;
 	this._pid =-1;
     }
 
     Run(output_callback)
     {
+	this._AllocatePTYForProgramConsole();
+	this._program_pty_reader.on("data", this.OnProgramConsoleOutput.bind(this));
 	this._output_callback = output_callback;
-	this._process = spawn("gdb", ["-i=mi", this._path]);
+	this._process = spawn("gdb", ["-i=mi", "-tty=" + this._pty.pty, this._path]);
 	this._process.stdout.on("data", this.ReadOutput.bind(this));
+    }
+
+    SendConsoleInput(command)
+    {
+	this._program_pty_writer.write(command);
     }
     
     RunCommand(command, args)
     {
 	this._process.stdin.write(util.format("%s %s\r\n", command, args));
+    }
+
+    _AllocatePTYForProgramConsole()
+    {
+	this._pty = pty.open(80, 25);
+	this._program_pty_reader = new tty.ReadStream(this._pty.slave.fd);
+	this._program_pty_writer = new tty.WriteStream(this._pty.master.fd);
+	
     }
 
     _ProcessGDBOutput(gdb_output)
@@ -48,6 +68,12 @@ class GDBRunner
 	}
     }
 
+    OnProgramConsoleOutput(data)
+    {
+	console.log("Called!\n");
+	this._output_callback({ProgramConsole : data.toString()}); 
+    }
+    
     ReadOutput(data)
     {
 	this._saved_data += data;
