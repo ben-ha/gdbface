@@ -75,6 +75,7 @@ class CodeView extends React.Component
 	this._FillBreakpoints();
 	
 	if (this.state.frameinfo.fullname == this.GetFullFileName())
+	   if (this.state.programstate == "Stopped")
 	    this.editor.setGutterMarker(parseInt(this.state.frameinfo.line) - 1, "breakpoints", this._CreateActiveLineElement(this._IsActiveLineWithBreakpoint()));
 
 	

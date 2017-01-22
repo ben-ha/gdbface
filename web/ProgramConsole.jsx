@@ -32,7 +32,7 @@ class ProgramConsole extends React.Component
 	   return (
 		<div className="form-group">
 		    <PlainConsole Output="ProgramConsoleOutput" />
-		    <input id="ProgramConsoleInputLine" className="form-control" type="text" onKeyDown={this._OnKeyDown.bind(this)}/>
+		    <input id="ProgramConsoleInputLine" className="form-control" type="text" onChange={this._OnChange.bind(this)} onKeyDown={this._OnKeyDown.bind(this)}/>
 		    </div>
 		    );
 	}
