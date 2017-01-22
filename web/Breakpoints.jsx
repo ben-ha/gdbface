@@ -19,7 +19,7 @@ class Breakpoints extends React.Component {
     render() {
       	return (
 
-	  <div className="table">
+	  <div className="table table-striped">
 	       <thead>
 		<tr>
 		  <th>#</th>

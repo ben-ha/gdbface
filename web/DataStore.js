@@ -2,6 +2,7 @@ import {RegisterDispatcherCallback} from './Dispatcher.js';
 import {results} from '../API.js';
 
 var _datastore = null;
+const MAX_CONSOLE_OUTPUT = 1024;
 
 function InitDataStore(dispatcher)
 {
@@ -64,7 +65,6 @@ class DataStore
 
     _OnDataAvailable(data)
     {
-	console.log(data);
 	this._GetProgramStateData(data);
 	this._GetProgramBreakpointInfo(data);
 	this._GetProgramFrameInformation(data);
@@ -77,6 +77,9 @@ class DataStore
     {
 	if (data.Type == results.GDB_INFERIOR_OUTPUT)
 	    this.Store.ProgramConsoleOutput += data.Data;
+    	
+	if (this.Store.ProgramConsoleOutput > MAX_CONSOLE_OUTPUT)
+		this.Store.ProgramConsoleOutput = this.Store.ProgramConsoleOutput.substr(-MAX_CONSOLE_OUTPUT);
     }
 
     _GetProgramStateData(data)
@@ -107,7 +110,6 @@ class DataStore
 	    this.Store.Breakpoints = [];
 	    for (let i = 0; i < data.Data.BreakpointTable["body"].length; ++i)
 	    {
-		console.log(data.Data.BreakpointTable["body"]);
 		this.Store.Breakpoints.push(data.Data.BreakpointTable["body"][i]);
 	    }
 	}
