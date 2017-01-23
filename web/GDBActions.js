@@ -63,6 +63,11 @@ class GDBActions
 	this.GetBreakpointList();
     }
 
+    static GetLocalVariables()
+    {
+	GetDispatcher().SendAction(API.SerializeRequest(API.actions.GET_LOCAL_VARIABLES, null));
+    }
+    
     static GetBreakpointList()
     {
 	GetDispatcher().SendAction(API.SerializeRequest(API.actions.GET_BREAKPOINT_LIST, null));

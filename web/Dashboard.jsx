@@ -1,6 +1,7 @@
 import React from 'react';
 import ConsoleView from './ConsoleView.jsx';
 import Breakpoints from './Breakpoints.jsx';
+import LocalVariables from './LocalVariables.jsx';
 import CodeViewContainer from './CodeViewContainer.jsx';
 import FileExplorer from './FileExplorer.jsx';
 
@@ -27,7 +28,7 @@ class Dashboard extends React.Component {
 		
 	       <div id="secarea" style={{"height":"80%","float":"right"}}>
 		     <Breakpoints />
-		
+		     <LocalVariables />		
 		</div>
 	       <div id="bottomarea" style={{"clear": "left"}}>
 		<ConsoleView />

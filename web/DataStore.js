@@ -36,13 +36,14 @@ class DataStore
 	    {
 		Breakpoints : [],
 		PID: -1,
-		ProgramState: "Stopped",
+		ProgramState: "NotStarted",
 		ProgramFrameInformation : {}, //When program is stopped, this contains the frame information
 		ProgramContext: {},
 		SourceList : [],
 		Sources : {},
 		GDBConsoleOutput : "",
 		ProgramConsoleOutput:"",
+		LocalVariables : [],
 	    };
 
 	this._callbacks = [];
@@ -70,6 +71,7 @@ class DataStore
 	this._GetProgramFrameInformation(data);
 	this._GetSourceInformation(data);
 	this._GetConsoleOutput(data);
+	this._GetLocalVariables(data);
 	this._NotifyRegisteredModules();
     }
 
@@ -82,6 +84,18 @@ class DataStore
 		this.Store.ProgramConsoleOutput = this.Store.ProgramConsoleOutput.substr(-MAX_CONSOLE_OUTPUT);
     }
 
+    _GetLocalVariables(data)
+    {
+	if (data.Data == undefined)
+	    return;
+
+	if (data.Data.locals == undefined)
+	    return;
+
+	console.log(data.Data.locals);
+	this.Store.LocalVariables = data.Data.locals;
+    }
+    
     _GetProgramStateData(data)
     {
 	if (data.Data == undefined)

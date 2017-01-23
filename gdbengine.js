@@ -37,6 +37,7 @@ class GDBEngine
 	this._api.BindAPI(API.actions.GET_SOURCES_LIST, this.GetSourcesList.bind(this));
 	this._api.BindAPI(API.actions.REMOVE_BREAKPOINT, this.RemoveBreakpoint.bind(this));
 	this._api.BindAPI(API.actions.SEND_CONSOLE_PROGRAM_INPUT, this.SendConsoleInput.bind(this));
+	this._api.BindAPI(API.actions.GET_LOCAL_VARIABLES, this.GetLocalVariables.bind(this));
     }
 
     Start()
@@ -121,6 +122,13 @@ class GDBEngine
 	this._SendCommand(command, "");
     }
 
+    GetLocalVariables()
+    {
+	let command = "-stack-list-locals";
+
+	this._SendCommand(command, "1");
+    }
+    
     GetRegisters()
     {
 	let cmd1 = "-data-list-register-names";
