@@ -27,7 +27,7 @@ class EditableTextbox extends React.Component
 	{
 		return (
 		<div>
-		<input type="text" value={this.state.value} style={{"border":"0px"}} onChange={this._OnChange.bind(this)} onBlur={this._OnBlur.bind(this)} />
+		<input type="text" value={this.state.value} style={{"border":"0px", "backgroundColor" : "transparent"}} onChange={this._OnChange.bind(this)} onBlur={this._OnBlur.bind(this)} />
 		</div>
 		);
 	}

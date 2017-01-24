@@ -186,7 +186,7 @@ class GDBEngine
     SetVariable(v)
     {
 	let command= "-gdb-set var";
-	console.log("Setting: " + v.name +"=" + v.value);
+
 	this._SendCommand(command, v.name + "=" + v.value);
     }
 
