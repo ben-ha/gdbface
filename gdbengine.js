@@ -38,6 +38,7 @@ class GDBEngine
 	this._api.BindAPI(API.actions.REMOVE_BREAKPOINT, this.RemoveBreakpoint.bind(this));
 	this._api.BindAPI(API.actions.SEND_CONSOLE_PROGRAM_INPUT, this.SendConsoleInput.bind(this));
 	this._api.BindAPI(API.actions.GET_LOCAL_VARIABLES, this.GetLocalVariables.bind(this));
+	this._api.BindAPI(API.actions.SET_VARIABLE, this.SetVariable.bind(this));
     }
 
     Start()
@@ -180,6 +181,13 @@ class GDBEngine
     {
 	let command = "-break-enable";
 	this._SendCommand(command, bpnum);
+    }
+
+    SetVariable(v)
+    {
+	let command= "-gdb-set var";
+	console.log("Setting: " + v.name +"=" + v.value);
+	this._SendCommand(command, v.name + "=" + v.value);
     }
 
     GetSourceFile(filename)

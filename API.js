@@ -17,6 +17,7 @@ var actions = {
     REMOVE_BREAKPOINT : "remove-breakpoint",
     SEND_CONSOLE_PROGRAM_INPUT : "send-console-input",
     GET_LOCAL_VARIABLES : "get-local-variables",
+    SET_VARIABLE : "set-variable",
 }
 
 var uiproxyevents = {

@@ -27,6 +27,12 @@ class LocalVariables extends React.Component {
 	this.setState({localvars: data.LocalVariables});
       }
 
+      _OnVariableChanged(name, value)
+      {
+	this.require_update = true;
+	GDBActions.GetLocalVariables();
+      }
+
     render() {
       	return (
 
@@ -39,7 +45,7 @@ class LocalVariables extends React.Component {
 		</thead>
 		<tbody>
 		{
-		    this.state.localvars.map(function (lv) { return (<LocalVariable key={lv.name + lv.value} varname={lv.name} value={lv.value} />) })
+		    this.state.localvars.map((lv) => { return (<LocalVariable key={lv.name + lv.value} varname={lv.name} value={lv.value} onChanged={this._OnVariableChanged.bind(this)} />) })
 		}
 		</tbody>
 	 </div>

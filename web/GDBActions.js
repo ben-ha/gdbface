@@ -90,6 +90,11 @@ class GDBActions
 	GetDispatcher().SendAction(API.SerializeRequest(API.actions.GET_SOURCES_LIST, null));
     }
 
+    static SetVariable(varname, value)
+    {
+	GetDispatcher().SendAction(API.SerializeRequest(API.actions.SET_VARIABLE, {name : varname, value: value}));
+    }
+
     static SendConsoleInput(input)
     {
 	GetDispatcher().SendAction(API.SerializeRequest(API.actions.SEND_CONSOLE_PROGRAM_INPUT, input));
