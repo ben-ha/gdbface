@@ -26,7 +26,7 @@ class Dashboard extends React.Component {
 	       </div>
 		</div>
 		
-	       <div id="secarea" style={{"height":"80%","float":"right"}}>
+	       <div id="secarea" style={{"height":"80%","float":"right", "overflow" : "hidden"}}>
 		     <Breakpoints />
 		     <LocalVariables />		
 		</div>

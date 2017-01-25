@@ -18,6 +18,7 @@ var actions = {
     SEND_CONSOLE_PROGRAM_INPUT : "send-console-input",
     GET_LOCAL_VARIABLES : "get-local-variables",
     SET_VARIABLE : "set-variable",
+    GET_STACK_TRACE : "get-stack-trace",
 }
 
 var uiproxyevents = {

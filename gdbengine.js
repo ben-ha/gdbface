@@ -39,6 +39,7 @@ class GDBEngine
 	this._api.BindAPI(API.actions.SEND_CONSOLE_PROGRAM_INPUT, this.SendConsoleInput.bind(this));
 	this._api.BindAPI(API.actions.GET_LOCAL_VARIABLES, this.GetLocalVariables.bind(this));
 	this._api.BindAPI(API.actions.SET_VARIABLE, this.SetVariable.bind(this));
+	this._api.BindAPI(API.actions.GET_STACK_TRACE, this.GetStackTrace.bind(this));
     }
 
     Start()
@@ -207,6 +208,12 @@ class GDBEngine
     GetSourcesList()
     {
 	let command = "-file-list-exec-source-files";
+	this._SendCommand(command, "");
+    }
+
+    GetStackTrace()
+    {
+	let command = "-stack-list-frames";
 	this._SendCommand(command, "");
     }
     

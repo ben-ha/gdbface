@@ -95,6 +95,11 @@ class GDBActions
 	GetDispatcher().SendAction(API.SerializeRequest(API.actions.SET_VARIABLE, {name : varname, value: value}));
     }
 
+    static GetStackTrace()
+    {
+	GetDispatcher().SendAction(API.SerializeRequest(API.actions.GET_STACK_TRACE, null));
+    }
+    
     static SendConsoleInput(input)
     {
 	GetDispatcher().SendAction(API.SerializeRequest(API.actions.SEND_CONSOLE_PROGRAM_INPUT, input));

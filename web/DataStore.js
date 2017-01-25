@@ -44,6 +44,7 @@ class DataStore
 		GDBConsoleOutput : "",
 		ProgramConsoleOutput:"",
 		LocalVariables : [],
+		StackTrace : [],
 	    };
 
 	this._callbacks = [];
@@ -72,6 +73,7 @@ class DataStore
 	this._GetSourceInformation(data);
 	this._GetConsoleOutput(data);
 	this._GetLocalVariables(data);
+	this._GetStackTraceInformation(data);
 	this._NotifyRegisteredModules();
     }
 
@@ -82,6 +84,17 @@ class DataStore
     	
 	if (this.Store.ProgramConsoleOutput > MAX_CONSOLE_OUTPUT)
 		this.Store.ProgramConsoleOutput = this.Store.ProgramConsoleOutput.substr(-MAX_CONSOLE_OUTPUT);
+    }
+
+    _GetStackTraceInformation(data)
+    {
+	if (data.Data == undefined)
+	    return;
+	
+	if (data.Data.stack == undefined)
+	    return;
+
+	this.Store.StackTrace = data.Data.stack;
     }
 
     _GetLocalVariables(data)
