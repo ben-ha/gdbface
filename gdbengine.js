@@ -40,6 +40,7 @@ class GDBEngine
 	this._api.BindAPI(API.actions.GET_LOCAL_VARIABLES, this.GetLocalVariables.bind(this));
 	this._api.BindAPI(API.actions.SET_VARIABLE, this.SetVariable.bind(this));
 	this._api.BindAPI(API.actions.GET_STACK_TRACE, this.GetStackTrace.bind(this));
+	this._api.BindAPI(API.actions.EVALUATE_EXPRESSION, this.EvaluateExpression.bind(this));
     }
 
     Start()
@@ -189,6 +190,14 @@ class GDBEngine
 	let command= "-gdb-set var";
 
 	this._SendCommand(command, v.name + "=" + v.value);
+    }
+
+    // For now, this is the only command that uses numeric prefixes.
+    EvaluateExpression(expr)
+    {
+	let command=expr.id + "-data-evaluate-expression";
+
+	this._SendCommand(command, expr.data);
     }
 
     GetSourceFile(filename)

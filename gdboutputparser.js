@@ -5,9 +5,10 @@ var API = require('./API.js');
 
 class GDBOutput
 {
-    constructor(type, data)
+    constructor(type, id, data)
     {
 	this.Type = type;
+	this.ID = id;
 	this.Data = data;
     }
 };
@@ -27,50 +28,52 @@ class GDBOutputParser
 	let rescode = "INFERIOR";
 	let restext = "";
 	let result = "";
+	let resid = "";
 	
 	if (parts != null)
 	{
-	    rescode = parts[1];
-	    restext = parts[2];
-	    result = parts[3];
+	    resid = parts[1];
+	    rescode = parts[2];
+	    restext = parts[3];
+	    result = parts[4];
 	}
 
 	switch (rescode)
 	{
 	    case '^':
-	        return this._HandleResultRecords(restext, result);
+	        return this._HandleResultRecords(resid, restext, result);
 	    default:
-	        return new GDBOutput(API.results.GDB_ASYNC_OUTPUT, this._HandleAsyncOutput(restext, result));
+	    return new GDBOutput(API.results.GDB_ASYNC_OUTPUT, resid, this._HandleAsyncOutput(restext, result));
 	}
     }
 
     IsGDBCommand(output)
     {
-	let matched = output.match(/^[\^*~@&\+=].*/);
+	let matched = output.match(/^[0-9]*[\^*~@&\+=].*/);
 
 	return matched != null;
     }
     
     _GetGDBOutputParts(trimmed_output)
     {
-	let matched = trimmed_output.match(/^([\^*~@&\+=])([A-Za-z-]+),(.*)/);
+	let matched = trimmed_output.match(/^([0-9]*)([\^*~@&\+=])([A-Za-z-]+),(.*)/);
 	if (matched == null)
 	{
-	    matched = trimmed_output.match(/^([\^*~@&\+=])([A-Za-z-]+)/);
+	    matched = trimmed_output.match(/^([0-9]*)([\^*~@&\+=])([A-Za-z-]+)/);
 	}
 
 	return matched;
     }
 
-    _HandleResultRecords(restext, result)
+    _HandleResultRecords(resid, restext, result)
     {
 	if (restext == "error")
-	    return new GDBOutput(API.results.GDB_ERROR, result);
+	    return new GDBOutput(API.results.GDB_ERROR, resid, result);
 	if (restext == "done")
-	    return new GDBOutput(API.results.GDB_RESULT_RECORD, this._HandleDoneResult(result));
+	    return new GDBOutput(API.results.GDB_RESULT_RECORD, resid, this._HandleDoneResult(result));
 
 	if (restext == "running")
-	    return new GDBOutput(API.results.GDB_INFERIOR_RUNNING, null);
+	    return new GDBOutput(API.results.GDB_INFERIOR_RUNNING, resid, null);
     }
 
     _HandleAsyncOutput(restext, result)

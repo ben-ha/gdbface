@@ -45,6 +45,7 @@ class DataStore
 		ProgramConsoleOutput:"",
 		LocalVariables : [],
 		StackTrace : [],
+		Watches : {},
 	    };
 
 	this._callbacks = [];
@@ -74,6 +75,7 @@ class DataStore
 	this._GetConsoleOutput(data);
 	this._GetLocalVariables(data);
 	this._GetStackTraceInformation(data);
+	this._GetWatchInformation(data);
 	this._NotifyRegisteredModules();
     }
 
@@ -164,6 +166,14 @@ class DataStore
 	    this.Store.Sources[data.Data.source.filename] = data.Data.source.data;
 	if (data.Data.files != undefined)
 	    this.Store.SourceList = data.Data.files;
+    }
+
+    _GetWatchInformation(data)
+    {
+	if (!(data.ID != "" && data.value != undefined))
+	    return;
+
+	this.Store.Watches[parseInt(data.ID)] = data.value;
     }
 
     _NotifyRegisteredModules()

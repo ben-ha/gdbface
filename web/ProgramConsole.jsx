@@ -24,7 +24,10 @@ class ProgramConsole extends React.Component
     _OnKeyDown(event)
     {
       if (event.keyCode == 13)
+      {
          this._OnNewLine(this.state.input);
+	 this.setState({input:""});
+      }
     }
 
     render()
@@ -32,7 +35,7 @@ class ProgramConsole extends React.Component
 	   return (
 		<div className="form-group">
 		    <PlainConsole Output="ProgramConsoleOutput" />
-		    <input id="ProgramConsoleInputLine" className="form-control" type="text" onChange={this._OnChange.bind(this)} onKeyDown={this._OnKeyDown.bind(this)}/>
+		    <input id="ProgramConsoleInputLine" className="form-control" type="text" value={this.state.input} onChange={this._OnChange.bind(this)} onKeyDown={this._OnKeyDown.bind(this)}/>
 		    </div>
 		    );
 	}

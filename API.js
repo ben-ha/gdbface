@@ -19,6 +19,7 @@ var actions = {
     GET_LOCAL_VARIABLES : "get-local-variables",
     SET_VARIABLE : "set-variable",
     GET_STACK_TRACE : "get-stack-trace",
+    EVALUATE_EXPRESSION : "evaluate-expression",
 }
 
 var uiproxyevents = {
