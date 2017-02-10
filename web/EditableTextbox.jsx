@@ -8,8 +8,14 @@ class EditableTextbox extends React.Component
 		super(props);
 		this.OnChangeCallback = props.onChange;
 		this.state = {value: props.value};
+		this.oldval = this.state.value;
 	}
 
+	_OnFocus()
+	{
+		this.oldval = this.state.value;
+	}
+	
 	_OnChange(event)
 	{
 		if (this.state.value == event.target.value)
@@ -20,6 +26,9 @@ class EditableTextbox extends React.Component
 
 	_OnBlur()
 	{
+		if (this.oldval == this.state.value)
+		   return;
+		   
 		this.OnChangeCallback(this.state.value);
 	}
 
@@ -27,7 +36,7 @@ class EditableTextbox extends React.Component
 	{
 		return (
 		<div>
-		<input type="text" value={this.state.value} style={{"border":"0px", "backgroundColor" : "transparent"}} onChange={this._OnChange.bind(this)} onBlur={this._OnBlur.bind(this)} />
+		<input type="text" value={this.state.value} style={{"border":"0px", "backgroundColor" : "transparent"}} onChange={this._OnChange.bind(this)} onBlur={this._OnBlur.bind(this)} onFocus={this._OnFocus.bind(this)} />
 		</div>
 		);
 	}

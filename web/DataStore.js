@@ -107,7 +107,6 @@ class DataStore
 	if (data.Data.locals == undefined)
 	    return;
 
-	console.log(data.Data.locals);
 	this.Store.LocalVariables = data.Data.locals;
     }
     
@@ -170,10 +169,14 @@ class DataStore
 
     _GetWatchInformation(data)
     {
-	if (!(data.ID != "" && data.value != undefined))
+	if (data.ID == "" || data.ID == undefined)
 	    return;
 
-	this.Store.Watches[parseInt(data.ID)] = data.value;
+	// Ugly hack!
+	if (data.ID.indexOf("777777") != 0)
+	    return;
+	
+	this.Store.Watches[data.ID] = data.Data.value;
     }
 
     _NotifyRegisteredModules()
