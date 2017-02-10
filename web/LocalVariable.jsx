@@ -1,6 +1,6 @@
 import React from 'react';
 import GDBActions from './GDBActions';
-import EditableTextbox from './EditableTextbox.jsx';
+import EditableTextbox from './GUIUtilities/EditableTextbox/EditableTextbox.jsx';
 
 class LocalVariable extends React.Component
 {

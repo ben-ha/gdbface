@@ -1,7 +1,7 @@
 import React from 'react';
 import GDBActions from './GDBActions';
 import {RegisterDataStoreCallback, UnregisterDataStoreCallback} from './DataStore.js';
-import EditableTextbox from './EditableTextbox.jsx';
+import EditableTextbox from './GUIUtilities/EditableTextbox/EditableTextbox.jsx';
 
 class Watch extends React.Component
 {
