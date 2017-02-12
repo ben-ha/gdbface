@@ -1,5 +1,5 @@
 import React from 'react';
-
+import HexRow from './HexEditorRow.jsx';
 class HexEditor extends React.Component
 {
 	constructor(props)
@@ -12,7 +12,7 @@ class HexEditor extends React.Component
 	{
 		return (
 		<div>
-		
+			<HexRow StartAddress={0} Content="ABCD" />		
 		</div>
 
 		);

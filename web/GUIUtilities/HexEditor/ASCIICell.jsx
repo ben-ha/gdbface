@@ -25,8 +25,9 @@ class ASCIICell extends React.Component
 	{
 		return (
 		<div>
-		<EditableTextbox MaxLength=0 onChange={this._OnValueChange.bind(this)} value={this._MakePrintable(this.state.content)} />;		
+		<EditableTextbox MaxLength={1} onChange={this._OnValueChange.bind(this)} value={this._MakePrintable(this.state.content)} />;		
 		</div>
+);
 	}
 }
 
