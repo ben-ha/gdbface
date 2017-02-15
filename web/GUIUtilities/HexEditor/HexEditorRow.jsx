@@ -7,38 +7,41 @@ class HexRow extends React.Component
 	constructor(props)
 	{
 		super(props);
-		this.state = {start : props.StartAddress, content : props.Content};
+		this.state = {start : props.StartAddress, content : props.Content, oldcontent : props.OldContent};
 	}
 
 	render()
 	{
 
-		var hex_cells = [];
-		var ascii_cells = [];
+		var hex_cells = []
+		var ascii_cells = []
 		for (let i = 0; i < this.state.content.length; ++i)
 		{
 			hex_cells.push((
-			<td>
-			    <HexCell Address={this.state.start + i} Content={this.state.content[i]} />
-			</td>)
+			    <HexCell Address={this.state.start + i} Content={this.state.content[i]} OldContent={this.state.oldcontent[i]} />)
 		)
 		}
 
 		for (let i = 0; i < this.state.content.length; ++i)
 		{
 			ascii_cells.push((
-			<td>
-			    <ASCIICell Address={this.state.start + i} Content={this.state.content[i]} />
-			</td>)
+			    <ASCIICell Address={this.state.start + i} Content={this.state.content[i]} OldContent={this.state.oldcontent[i]} />)
 		)
 		}
 
 		return (
-		<tr>
-		<td>{this.state.start.toString(16)}</td>
+		<div>
+		<span style={{float:"left"}}>
+		{this.state.start.toString(16) + ":"}
+		</span>
+		<span style={{float:"left", marginLeft:"20px"}}>
 		{hex_cells}
+		</span>
+		<span style={{float:"left", marginLeft:"20px"}}>
 		{ascii_cells}
-		</tr>
+		</span>
+		<span style={{clear:"both"}} />
+		</div>
 		);
 	}
 }

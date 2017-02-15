@@ -6,6 +6,7 @@ class HexCell extends React.Component
 	constructor(props)
 	{
 		super(props);
+		this.color = props.OldContent != props.Content ? "red" : "black";
 		this.state = {address: props.Address, content : this._MakeZeroPaddedHexString(props.Content)};
 	}
 
@@ -28,9 +29,9 @@ class HexCell extends React.Component
 	render()
 	{
 		return (
-		<div>
-		<EditableTextbox MaxLength={2} AllowedCharsRegex="[0-9A-Fa-f][0-9A-Fa-f]" onChange={this._OnValueChange.bind(this)} value={this.state.content} />;		
-		</div>
+		<span style={{"float":"left", "marginRight" : "0px", "marginLeft" :"0px"}}>
+		<EditableTextbox Color={this.color} Size={2} MaxLength={2} AllowedCharsRegex="[0-9A-Fa-f][0-9A-Fa-f]" onChange={this._OnValueChange.bind(this)} value={this.state.content} />		
+		</span>
 );
 	}
 }

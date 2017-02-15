@@ -10,7 +10,8 @@ class EditableTextbox extends React.Component
 		// Add LengthLimit for hexeditor support
 		this.maxlength = props.MaxLength;
 		this.AllowedCharsRegex = props.AllowedCharsRegex;
-		this.state = {value: props.value};
+		this.size = props.Size;
+		this.state = {value: props.value, color : props.Color};
 		this.oldval = this.state.value;
 	}
 
@@ -47,7 +48,7 @@ class EditableTextbox extends React.Component
 	{
 		return (
 		<div>
-		<input type="text" value={this.state.value} style={{"border":"0px", "backgroundColor" : "transparent"}} onChange={this._OnChange.bind(this)} onBlur={this._OnBlur.bind(this)} onFocus={this._OnFocus.bind(this)} maxLength={this.maxlength}/>
+		<input type="text" value={this.state.value} style={{"border":"0px", "backgroundColor" : "transparent", "color" : this.state.color}} onChange={this._OnChange.bind(this)} onBlur={this._OnBlur.bind(this)} onFocus={this._OnFocus.bind(this)} maxLength={this.maxlength} size={this.size}/>
 		</div>
 		);
 	}

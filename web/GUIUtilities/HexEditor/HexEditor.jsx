@@ -12,7 +12,9 @@ class HexEditor extends React.Component
 	{
 		return (
 		<div>
-			<HexRow StartAddress={0} Content="ABCD" />		
+			<HexRow StartAddress={0} Content="ABCD" OldContent="ABDD" />
+			<br />
+			<HexRow StartAddress={4} Content="BBBB" OldContent="BBBB" />
 		</div>
 
 		);
