@@ -1,4 +1,5 @@
 import API from '../API.js';
+import Utilities from './GUIUtilities/Utilities.js';
 import {GetDispatcher} from './Dispatcher.js';
 
 class GDBActions
@@ -108,6 +109,20 @@ class GDBActions
     static SendConsoleInput(input)
     {
 	GetDispatcher().SendAction(API.SerializeRequest(API.actions.SEND_CONSOLE_PROGRAM_INPUT, input));
+    }
+
+    static GetMemoryChunk(address_expression, size)
+    {
+	GetDispatcher().SendAction(API.SerializeRequest(API.actions.GET_MEMORY_CHUNK, {expr : address_expression, size: size}));
+    }
+
+    static SetMemoryChunk(address_expression, value)
+    {
+	let hex_value = "";
+	for (let i = 0; i < value.length; ++i)
+	    hex_value += Utilities.NumberToHexStringPadded(value.charCodeAt(i), 2)
+	
+	GetDispatcher().SendAction(API.SerializeRequest(API.actions.SET_MEMORY_CHUNK, {address: address_expression, contents : hex_value}));
     }
 }
 

@@ -6,13 +6,15 @@ class HexCell extends React.Component
 	constructor(props)
 	{
 		super(props);
-		this.color = props.OldContent != props.Content ? "red" : "black";
+		let should_color = props.OldContent != "" && props.OldContent != null && props.OldContent != undefined && props.OldContent != props.Content;
+		this.OnValueChanged = props.OnValueChanged;
+		this.color = should_color ? "red" : "black";
 		this.state = {address: props.Address, content : this._MakeZeroPaddedHexString(props.Content)};
 	}
 
 	_OnValueChange(val)
 	{
-		this.props.OnValueChanged(address, parseInt(val, 16));
+		this.OnValueChanged(this.state.address, parseInt(val, 16));
 	}
 
 	_MakeZeroPaddedHexString(str)
@@ -29,8 +31,8 @@ class HexCell extends React.Component
 	render()
 	{
 		return (
-		<span style={{"float":"left", "marginRight" : "0px", "marginLeft" :"0px"}}>
-		<EditableTextbox Color={this.color} Size={2} MaxLength={2} AllowedCharsRegex="[0-9A-Fa-f][0-9A-Fa-f]" onChange={this._OnValueChange.bind(this)} value={this.state.content} />		
+		<span key={this.state.address} style={{"float":"left", "marginRight" : "0px", "marginLeft" :"0px"}}>
+		<EditableTextbox Color={this.color} Size={1} MaxLength={2} Width="20px" AllowedCharsRegex="[0-9A-Fa-f][0-9A-Fa-f]" onChange={this._OnValueChange.bind(this)} value={this.state.content} />		
 		</span>
 );
 	}

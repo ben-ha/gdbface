@@ -20,6 +20,8 @@ var actions = {
     SET_VARIABLE : "set-variable",
     GET_STACK_TRACE : "get-stack-trace",
     EVALUATE_EXPRESSION : "evaluate-expression",
+    GET_MEMORY_CHUNK : "get-memory-chunk",
+    SET_MEMORY_CHUNK : "set-memory-chunk",
 }
 
 var uiproxyevents = {

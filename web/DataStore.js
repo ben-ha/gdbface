@@ -46,6 +46,7 @@ class DataStore
 		LocalVariables : [],
 		StackTrace : [],
 		Watches : {},
+		HexView : {Address : null, Memory:""},
 	    };
 
 	this._callbacks = [];
@@ -68,6 +69,7 @@ class DataStore
 
     _OnDataAvailable(data)
     {
+	console.log(data);
 	this._GetProgramStateData(data);
 	this._GetProgramBreakpointInfo(data);
 	this._GetProgramFrameInformation(data);
@@ -76,7 +78,21 @@ class DataStore
 	this._GetLocalVariables(data);
 	this._GetStackTraceInformation(data);
 	this._GetWatchInformation(data);
+	this._GetHexViewInformation(data);
 	this._NotifyRegisteredModules();
+    }
+
+    _GetHexViewInformation(data)
+    {
+	if (data.Data == undefined)
+	    return;
+
+	if (data.Data.memory == undefined)
+	    return;
+
+	
+	this.Store.HexView.Address = parseInt(data.Data.memory[0].begin, 16);
+	this.Store.HexView.Memory = data.Data.memory[0].contents.split(/(?=(?:..)*$)/).map((z) => String.fromCharCode(parseInt(z, 16))).join("");
     }
 
     _GetConsoleOutput(data)

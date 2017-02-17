@@ -41,6 +41,8 @@ class GDBEngine
 	this._api.BindAPI(API.actions.SET_VARIABLE, this.SetVariable.bind(this));
 	this._api.BindAPI(API.actions.GET_STACK_TRACE, this.GetStackTrace.bind(this));
 	this._api.BindAPI(API.actions.EVALUATE_EXPRESSION, this.EvaluateExpression.bind(this));
+	this._api.BindAPI(API.actions.GET_MEMORY_CHUNK, this.GetMemoryChunk.bind(this));
+	this._api.BindAPI(API.actions.SET_MEMORY_CHUNK, this.SetMemoryChunk.bind(this));
     }
 
     Start()
@@ -224,6 +226,18 @@ class GDBEngine
     {
 	let command = "-stack-list-frames";
 	this._SendCommand(command, "");
+    }
+
+    GetMemoryChunk(obj)
+    {
+	let command = "-data-read-memory-bytes";
+	this._SendCommand(command, "(" + obj.expr + ") " + obj.size);
+    }
+
+    SetMemoryChunk(obj)
+    {
+	let command="-data-write-memory-bytes";
+	this._SendCommand(command, obj.address + " " + obj.contents);
     }
     
     _SerializeGDBEngineResult(obj)

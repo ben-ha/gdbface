@@ -6,7 +6,7 @@ import StackTrace from './StackTrace.jsx';
 import Watches from './Watches.jsx';
 import CodeViewContainer from './CodeViewContainer.jsx';
 import FileExplorer from './FileExplorer.jsx';
-import HexEditor from './GUIUtilities/HexEditor/HexEditor.jsx';
+import HexView from './HexView.jsx';
 class Dashboard extends React.Component {
 
     constructor(props)
@@ -36,7 +36,7 @@ class Dashboard extends React.Component {
 		</div>
 	       <div id="bottomarea" style={{"clear": "left"}}>
 		<ConsoleView />
-		<HexEditor />
+		<HexView ElementsInRow={16} />
 		</div>
 		</div>
 	</div>

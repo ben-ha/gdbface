@@ -6,7 +6,8 @@ class ASCIICell extends React.Component
 	constructor(props)
 	{
 		super(props);
-		this.color = props.OldContent != props.Content ? "red" : "black";
+		let should_color = props.OldContent != "" && props.OldContent != null && props.OldContent != undefined && props.OldContent != props.Content;
+		this.color = should_color ? "red" : "black";
 		this.state = {address: props.Address, content : props.Content};
 	}
 
@@ -25,8 +26,8 @@ class ASCIICell extends React.Component
 	render()
 	{
 		return (
-		<span style={{"float":"left", "marginRight" :"0px", "marginLeft":"0px"}}>
-		<EditableTextbox Color={this.color} Size={1} MaxLength={1} onChange={this._OnValueChange.bind(this)} value={this._MakePrintable(this.state.content)} />		
+		<span key={this.state.address} style={{"float":"left", "marginRight" :"0px", "marginLeft":"0px"}}>
+		<EditableTextbox Color={this.color} Size={1} MaxLength={1} Width="15px" onChange={this._OnValueChange.bind(this)} value={this._MakePrintable(this.state.content)} />		
 		</span>
 );
 	}

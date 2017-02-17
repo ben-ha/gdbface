@@ -66,7 +66,7 @@ class GDBRunner
 
     OnProgramConsoleOutput(data)
     {
-	this._output_callback(new GDBOutputParser.GDBOutput(API.results.GDB_INFERIOR_OUTPUT, data.toString())); 
+	this._output_callback(new GDBOutputParser.GDBOutput(API.results.GDB_INFERIOR_OUTPUT, "", data.toString())); 
     }
     
     ReadOutput(data)
