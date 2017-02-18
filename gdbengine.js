@@ -77,9 +77,9 @@ class GDBEngine
 	return this._gdb_parser.Parse(output);
     }
     
-    _SendCommand(command, args)
+    _SendCommand(command, args, callback)
     {
-	this._gdb_runner.RunCommand(command, args);
+	this._gdb_runner.RunCommand(command, args, callback);
     }
 
     SendConsoleInput(command)
@@ -194,12 +194,11 @@ class GDBEngine
 	this._SendCommand(command, v.name + "=" + v.value);
     }
 
-    // For now, this is the only command that uses numeric prefixes.
     EvaluateExpression(expr)
     {
-	let command=expr.id + "-data-evaluate-expression";
+	let command="-data-evaluate-expression";
 
-	this._SendCommand(command, expr.data);
+	this._SendCommand(command, '"' + expr.data + '"', (obj) => {obj.Data.WatchID = expr.id});
     }
 
     GetSourceFile(filename)

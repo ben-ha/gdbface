@@ -185,14 +185,10 @@ class DataStore
 
     _GetWatchInformation(data)
     {
-	if (data.ID == "" || data.ID == undefined)
-	    return;
-
-	// Ugly hack!
-	if (data.ID.indexOf("777777") != 0)
+	if (data.Data.WatchID == "" || data.Data.WatchID == undefined)
 	    return;
 	
-	this.Store.Watches[data.ID] = data.Data.value;
+	this.Store.Watches[data.Data.WatchID] = data.Data.value;
     }
 
     _NotifyRegisteredModules()

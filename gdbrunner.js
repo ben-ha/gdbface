@@ -1,7 +1,5 @@
 "use strict"
 
-// TODO: Support program output
-
 const spawn = require('child_process').spawn;
 const util = require('util');
 const process = require('process');
@@ -11,6 +9,15 @@ const API = require('./API.js');
 const GDBOutputParser = require('./gdboutputparser.js');
 const GDB_PROMPT = "(gdb) ";
 const EventEmitter = require("events");
+
+class GDBCommandDescriptor
+{
+    constructor(id, filter_callback)
+    {
+	this.ID = id;
+	this.Filter = filter_callback;
+    }
+}
 
 class GDBRunner
 {
@@ -23,6 +30,8 @@ class GDBRunner
 	this._saved_data = "";
 	this._pty = null;
 	this._pid =-1;
+	this._command_id = 0;
+	this._command_descriptors = {};
     }
 
     Run(output_callback)
@@ -39,9 +48,12 @@ class GDBRunner
 	this._pty.master.write(command);
     }
     
-    RunCommand(command, args)
+    RunCommand(command, args, filter_callback)
     {
-	this._process.stdin.write(util.format("%s %s\r\n", command, args));
+	let cmd_descriptor = new GDBCommandDescriptor(this._command_id, filter_callback)
+	this._command_descriptors[this._command_id] = cmd_descriptor;
+	this._process.stdin.write(util.format("%d%s %s\r\n", this._command_id, command, args));
+	this._command_id++;
     }
 
     _AllocatePTYForProgramConsole()
@@ -64,6 +76,23 @@ class GDBRunner
 	}
     }
 
+    _CallCommandFilter(gdb_output)
+    {
+	if (gdb_output == undefined)
+	    return;
+
+	if (gdb_output.Type != API.results.GDB_RESULT_RECORD)
+		return;
+
+	if (this._command_descriptors[gdb_output.ID] != undefined)
+	{
+	    let callback = this._command_descriptors[gdb_output.ID].Filter;
+
+	    if (callback != undefined && callback != null)
+			callback(gdb_output)
+	}
+    }
+
     OnProgramConsoleOutput(data)
     {
 	this._output_callback(new GDBOutputParser.GDBOutput(API.results.GDB_INFERIOR_OUTPUT, "", data.toString())); 
@@ -80,6 +109,7 @@ class GDBRunner
 	    {
 		let output = this._gdb_parser.Parse(line);
 		this._ProcessGDBOutput(output);
+		this._CallCommandFilter(output);
 		this._output_callback(output);
 	    }
 
