@@ -19,8 +19,8 @@ class Dashboard extends React.Component {
        return (
        	      <div className="panel panel-default">
 	      <div className="panel-body">
-	       <div id="mainarea" style={{"width":"70%", "float":"left", "minHeight":"80%", "height":"80%"}}>
-	       <div id="dashboard_fileexplorer_div" style={{"width":"10%", "float":"left"}}>
+	       <div id="mainarea" style={{"width":"70%", "float":"left", "minHeight":"80%", "height":"80%", "maxHeight" : "80%"}}>
+	       <div id="dashboard_fileexplorer_div" style={{"overflow" : "auto", "width":"10%", "maxWidth":"10%", "float":"left"}}>
 	       <FileExplorer />
 	       </div>
 	       <div id="dashboard_codeview_div" style={{"float":"left","width":"90%"}}>
@@ -28,7 +28,7 @@ class Dashboard extends React.Component {
 	       </div>
 		</div>
 		
-	       <div id="secarea" style={{"height":"80%","float":"right", "overflow" : "hidden"}}>
+	       <div id="secarea" style={{"width" : "30%", "height":"80%","float":"left", "overflow" : "auto"}}>
 		     <Breakpoints />
 		     <LocalVariables />
 		     <Watches />
