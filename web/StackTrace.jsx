@@ -29,7 +29,8 @@ class StackTrace extends React.Component {
     render() {
       	return (
 
-	  <div className="table table-striped">
+	  <div>
+	   <table className="table table-striped">
 	       <thead>
 		<tr>
 		  <th>Address</th>
@@ -48,6 +49,7 @@ class StackTrace extends React.Component {
 		    ) })
 		}
 		</tbody>
+	   </table>
 	 </div>
         );
      }

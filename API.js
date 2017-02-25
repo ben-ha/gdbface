@@ -22,6 +22,7 @@ var actions = {
     EVALUATE_EXPRESSION : "evaluate-expression",
     GET_MEMORY_CHUNK : "get-memory-chunk",
     SET_MEMORY_CHUNK : "set-memory-chunk",
+    GET_PROGRAM_STATE : "get-program-state",
 }
 
 var uiproxyevents = {
@@ -36,9 +37,8 @@ var results =
 	GDB_INFERIOR_OUTPUT : 2,
 	GDB_ASYNC_OUTPUT : 3,
 	GDB_NOP : 4,
-	GDB_INFERIOR_RUNNING : 5,
-	GDB_ENGINE_RESULT :6,
-	GDB_ENGINE_ERROR : 7,
+	GDB_ENGINE_RESULT :5,
+	GDB_ENGINE_ERROR : 6,
     }
 
 class API

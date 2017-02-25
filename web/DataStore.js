@@ -70,6 +70,10 @@ class DataStore
     _OnDataAvailable(data)
     {
 	console.log(data);
+
+	if (data == null)
+		return;
+
 	this._GetProgramStateData(data);
 	this._GetProgramBreakpointInfo(data);
 	this._GetProgramFrameInformation(data);
@@ -140,15 +144,21 @@ class DataStore
     
     _GetProgramStateData(data)
     {
+	if (data == null)
+		return;
+
 	if (data.Data == undefined)
 	    return;
-	
+
+	if (data.Data.ProgramState != undefined)
+		this.Store.ProgramState = data.Data.ProgramState;
+
 	if (data.Data.running != undefined)
 	    this.Store.ProgramState = "Running";
 
 	if (data.Data.stopped != undefined)
 	    this.Store.ProgramState = "Stopped";
-
+	
 	if (data.Data["thread-group-started"] != undefined)
 	    this.Store.PID = data.Data["thread-group-started"].pid;
     }

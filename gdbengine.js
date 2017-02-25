@@ -60,6 +60,7 @@ class GDBEngine
 	this._api.BindAPI(API.actions.GET_MEMORY_CHUNK, this.GetMemoryChunk.bind(this));
 	this._api.BindAPI(API.actions.SET_MEMORY_CHUNK, this.SetMemoryChunk.bind(this));
 	this._api.BindAPI(API.actions.GET_MEMORY_CHUNK_HASH, this.GetMemoryChunkHash.bind(this));
+    	this._api.BindAPI(API.actions.GET_PROGRAM_STATE, this.GetProgramState.bind(this));
     }
 
     Start()
@@ -232,6 +233,11 @@ class GDBEngine
 		    });
     }
 
+    GetProgramState()
+    {
+	this._AsyncCallback(this._SerializeGDBEngineResult({ProgramState : this._gdb_runner.GetInferiorStatus()}));
+    }
+
     GetSourcesList()
     {
 	let command = "-file-list-exec-source-files";
@@ -240,7 +246,7 @@ class GDBEngine
 		let real_files = [];
 		for (let i = 0; i < res.Data.files.length; ++i)
 		{
-			if (fs.existsSync(res.Data.files[i].fullname))
+			if (!res.Data.files[i].fullname.endsWith(".h") && fs.existsSync(res.Data.files[i].fullname))
 				real_files.push(res.Data.files[i])
 		}
 	

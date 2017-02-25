@@ -7,10 +7,16 @@ class GDBActions
 {
         static GetFullInfo()
         {
+	    GDBActions.GetProgramState();
 	    GDBActions.RequestSourcesList();
 	    GDBActions.GetLocalVariables();
 	    GDBActions.GetStackTrace();
         }
+
+	static GetProgramState()
+	{
+		GetDispatcher().SendAction(API.SerializeRequest(API.actions.GET_PROGRAM_STATE, null));
+	}
     
 	static GetBreakpointList()
 	{

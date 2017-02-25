@@ -39,7 +39,7 @@ class HexRow extends React.Component
 
 		return (
 		<div style={{"clear": "both"}}>
-		<span style={{"font-family" : "monospace", float:"left"}}>
+		<span style={{"fontFamily" : "monospace", float:"left"}}>
 		{Utilities.NumberToAddress(this.state.start) + ":"}
 		</span>
 		<span style={{float:"left", marginLeft:"20px"}}>

@@ -51,7 +51,7 @@ class EditableTextbox extends React.Component
 	{
 		return (
 		<div>
-		<input type="text" className={this.borderClass} value={this.state.value} style={{"font-family" : "monospace", "width" : this.width, "border":this.border, "backgroundColor" : "transparent", "color" : this.state.color}} onChange={this._OnChange.bind(this)} onBlur={this._OnBlur.bind(this)} onFocus={this._OnFocus.bind(this)} maxLength={this.maxlength} size={this.size}/>
+		<input type="text" className={this.borderClass} value={this.state.value} style={{"fontFamily" : "monospace", "width" : this.width, "border":this.border, "backgroundColor" : "transparent", "color" : this.state.color}} onChange={this._OnChange.bind(this)} onBlur={this._OnBlur.bind(this)} onFocus={this._OnFocus.bind(this)} maxLength={this.maxlength} size={this.size}/>
 		</div>
 		);
 	}

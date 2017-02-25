@@ -28,6 +28,7 @@ Currently implemented features:
 ### Usage
 
 	1. ./gdbface <path to program> <arguments>
+	2. ./gdbface -p <pid>
 		Note: Compile your program with -g flag
 		
 ## License

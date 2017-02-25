@@ -19,7 +19,8 @@ class Breakpoints extends React.Component {
     render() {
       	return (
 
-	  <div className="table table-striped">
+	  <div> 
+	    <table className="table table-striped">
 	       <thead>
 		<tr>
 		  <th>#</th>
@@ -34,6 +35,7 @@ class Breakpoints extends React.Component {
 		    this.state.breakpoints.map(function (bp) { return (<Breakpoint key={bp.number+bp.addr+bp.func+bp.file+bp.line+bp.enabled} num={bp.number} address={bp.addr} func={bp.func + "@" + bp.file +":" +bp.line} enabled={bp.enabled == "y"} />) })
 		}
 		</tbody>
+	    </table>
 	 </div>
         );
      }

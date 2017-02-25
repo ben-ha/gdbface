@@ -45,8 +45,14 @@ class GDBRunner
         this._saved_data = "";
         this._pty = null;
         this._pid =-1;
+	this._inferior_status = "NotStarted";
         this._command_id = 0;
         this._command_descriptors = {};
+    }
+
+    GetInferiorStatus()
+    {
+	return this._inferior_status;
     }
 
     Run(output_callback)
@@ -85,9 +91,15 @@ class GDBRunner
     {
 	if (gdb_output == undefined)
 	    return;
-	
+
 	if (gdb_output.Data != null)
 	{
+	    if (gdb_output.Data.stopped != undefined)
+		this._inferior_status = "Stopped";
+	
+   	    if (gdb_output.Data.running != undefined)
+		this._inferior_status = "Running";
+
 	    if(gdb_output.Data['thread-group-started'] != undefined)
 	    {
 		this._pid = gdb_output.Data['thread-group-started']['pid'];

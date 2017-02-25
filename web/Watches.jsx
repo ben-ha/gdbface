@@ -26,7 +26,8 @@ class Watches extends React.Component {
     render() {
       	return (
 
-	  <div className="table table-striped">
+	  <div>
+	   <table className="table table-striped">
 	       <thead>
 		<tr>
 		  <th>Expression</th>
@@ -39,6 +40,7 @@ class Watches extends React.Component {
 		}
 		<Watch key={Object.keys(this.state.watches).length} ID={Object.keys(this.state.watches).length} onExpressionChange={this._OnExpressionChange.bind(this)}/>
 		</tbody>
+           </table>
 	 </div>
         );
      }

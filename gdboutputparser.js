@@ -29,7 +29,7 @@ class GDBOutputParser
 	let restext = "";
 	let result = "";
 	let resid = "";
-	
+
 	if (parts != null)
 	{
 	    resid = parts[1];
@@ -71,9 +71,6 @@ class GDBOutputParser
 	    return new GDBOutput(API.results.GDB_ERROR, resid, result);
 	if (restext == "done")
 	    return new GDBOutput(API.results.GDB_RESULT_RECORD, resid, this._HandleDoneResult(result));
-
-	if (restext == "running")
-	    return new GDBOutput(API.results.GDB_INFERIOR_RUNNING, resid, null);
     }
 
     _HandleAsyncOutput(restext, result)

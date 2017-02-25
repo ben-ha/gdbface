@@ -45,7 +45,8 @@ class LocalVariables extends React.Component {
     render() {
       	return (
 
-	  <div className="table table-striped">
+	  <div> 
+	    <table className="table table-striped">
 	       <thead>
 		<tr>
 		  <th>Variable</th>
@@ -57,7 +58,8 @@ class LocalVariables extends React.Component {
 		    this.state.localvars.map((lv) => { return (<LocalVariable key={lv.name + lv.value} varname={lv.name} value={lv.value} onChanged={this._OnVariableChanged.bind(this)} />) })
 		}
 		</tbody>
-	 </div>
+	     </table> 
+	</div>
         );
      }
 }
