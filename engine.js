@@ -7,9 +7,8 @@ module.exports = {"run": run};
 
 var client_contexts = [];
 
-function run(port, binpath, args)
+function run(port, params)
 {
-    console.log("STARTING!");
     var server = express();
 
     var app = require('express')();
@@ -19,14 +18,14 @@ function run(port, binpath, args)
 
     app.use(express.static(path.join(__dirname, "dist")));
 
-    var gdb_engine = new GDBEngine(binpath, args);
+    
+    var gdb_engine = new GDBEngine(params);
 
     gdb_engine.events.on("response", function(res) {
 	io.sockets.emit("response", res);
     });
 			 
     gdb_engine.Start();
-    console.log("After run");
 
     io.on("connection", function (socket) {
 	socket.on("api", function (msg) { gdb_engine.ProcessRequest(msg);});

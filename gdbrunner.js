@@ -21,17 +21,32 @@ class GDBCommandDescriptor
 
 class GDBRunner
 {
-    constructor(path, args)
+    constructor(arg)
     {
-	this._path = path;
-	this._current_output = "";
-	this._event_emitter = new EventEmitter();
-	this._gdb_parser = new GDBOutputParser.GDBOutputParser();
-	this._saved_data = "";
-	this._pty = null;
-	this._pid =-1;
-	this._command_id = 0;
-	this._command_descriptors = {};
+	if (typeof(arg) === "string")
+	{
+		this._should_attach = false;
+		this._path = arg;
+	}
+	else if (typeof(arg) === "number")
+	{
+	        this._should_attach = true;
+        	this._attach_pid = arg;
+	}
+
+	this._CommonInitializer();
+    }
+
+    _CommonInitializer()
+    {
+        this._current_output = "";
+        this._event_emitter = new EventEmitter();
+        this._gdb_parser = new GDBOutputParser.GDBOutputParser();
+        this._saved_data = "";
+        this._pty = null;
+        this._pid =-1;
+        this._command_id = 0;
+        this._command_descriptors = {};
     }
 
     Run(output_callback)
@@ -39,7 +54,11 @@ class GDBRunner
 	this._AllocatePTYForProgramConsole();
 	
 	this._output_callback = output_callback;
-	this._process = spawn("gdb", ["-i=mi", "-tty=" + this._pty.pty, this._path]);
+
+	if (this._should_attach)
+		this._process = spawn("gdb", ["-i=mi", "-tty=" + this._pty.pty, "-p", this._attach_pid]);
+	else
+		this._process = spawn("gdb", ["-i=mi", "-tty=" + this._pty.pty, this._path]);
 	this._process.stdout.on("data", this.ReadOutput.bind(this));
     }
 

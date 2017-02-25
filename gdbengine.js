@@ -9,16 +9,31 @@ const EventEmitter = require("events");
 
 class GDBEngine
 {
-    constructor(path, args)
+    constructor(params)
     {
-	this._gdb_runner = new GDBRunner(path);
-	this._gdb_parser = new GDBOutputParser.GDBOutputParser();
-	this._args = args;
-	this._ready = false;
-	this._api = new API();
-	this.events = new EventEmitter();
+	if (params["pid"] != undefined)
+	{
+	        this._gdb_runner = new GDBRunner(parseInt(params["pid"]));
+        	this._attach = true;
+	}
+	else
+	{
+		this._gdb_runner = new GDBRunner(params["binpath"]);
+		this._args = params["args"];
+        	this._attach = false;
+	}
 
-	this._SetupBindings();
+	this._CommonInitialize();
+    }
+
+    _CommonInitialize()
+    {
+        this._gdb_parser = new GDBOutputParser.GDBOutputParser();
+        this._ready = false;
+        this._api = new API();
+        this.events = new EventEmitter();
+
+        this._SetupBindings();
     }
 
     _SetupBindings()
@@ -50,7 +65,8 @@ class GDBEngine
     Start()
     {
 	this._gdb_runner.Run(this._AsyncCallback.bind(this));
-	this._SetupParameters();
+	if (!this._attach)
+		this._SetupParameters();
     }
 
     ProcessRequest(request)
@@ -219,7 +235,17 @@ class GDBEngine
     GetSourcesList()
     {
 	let command = "-file-list-exec-source-files";
-	this._SendCommand(command, "");
+	this._SendCommand(command, "", (res) =>
+	{
+		let real_files = [];
+		for (let i = 0; i < res.Data.files.length; ++i)
+		{
+			if (fs.existsSync(res.Data.files[i].fullname))
+				real_files.push(res.Data.files[i])
+		}
+	
+		res.Data.files = real_files;
+	});
     }
 
     GetStackTrace()
