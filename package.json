@@ -2,17 +2,16 @@
   "name": "gdbface",
   "version": "1.0.0",
   "description": "GDB Frontend",
-  "main": "gdbface.js",
+  "main": "gdbface",
   "scripts": {
-    "start": "webpack-dev-server --content-base ./web --hot"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://benha1024@bitbucket.org/benha1024/gdbface.git"
+    "url": "git+https://github.org/ben-ha/gdbface.git"
   },
   "author": "Benha",
-  "license": "ISC",
-  "homepage": "https://bitbucket.org/benha1024/gdbface#readme",
+  "license": "MIT",
+  "homepage": "https://github.org/ben-ha/gdbface",
   "dependencies": {
     "bootstrap": "^3.3.7",
     "bootstrap-webpack": "0.0.5",
