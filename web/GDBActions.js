@@ -7,8 +7,9 @@ class GDBActions
 {
         static GetFullInfo()
         {
-//	    GDBActions.GetBreakpointList();
 	    GDBActions.RequestSourcesList();
+	    GDBActions.GetLocalVariables();
+	    GDBActions.GetStackTrace();
         }
     
 	static GetBreakpointList()
