@@ -22,7 +22,6 @@ class ControlKeys extends React.Component
 		
 		let should_change = (msg.Data.running != undefined) || (msg.Data.stopped != undefined);
 
-		console.log("Should Change " + should_change);
 		if (should_change)
 			this.setState({paused : msg.Data.stopped != undefined});
 	}
@@ -64,7 +63,7 @@ class ControlKeys extends React.Component
 			<button className="btn btn-primary" onClick={this._BreakDebugee.bind(this)}>
 				<span className="glyphicon glyphicon-pause"></span>
 			</button>
-			<button className="btn btn-primary" onClick={GDBActions.AddBreakpointByFuncName("main")}>
+			<button className="btn btn-primary" onClick={this._RestartDebugee.bind(this)}>
 				<span className="glyphicon glyphicon-refresh"></span>
 			</button>
 			</div>

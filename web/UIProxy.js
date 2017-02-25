@@ -1,4 +1,4 @@
-import uiproxyevents from '../API.js';
+import {uiproxyevents} from '../API.js';
 
 var _uiproxy = null;
 
@@ -48,6 +48,11 @@ class UIProxy
     {
 	let obj = {"fullpath" : fullpath, "caption" : filename};
 	this.NotifyCallbacks(uiproxyevents.ON_OPEN_SOURCE_FILE, obj);
+    }
+
+    InvalidateMemory()
+    {
+	this.NotifyCallbacks(uiproxyevents.ON_INVALIDATE_MEMORY, null);
     }
 }
 

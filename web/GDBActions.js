@@ -1,4 +1,5 @@
 import API from '../API.js';
+import {GetUIProxy} from './UIProxy.js';
 import Utilities from './GUIUtilities/Utilities.js';
 import {GetDispatcher} from './Dispatcher.js';
 
@@ -18,6 +19,7 @@ class GDBActions
 	static RunDebugee()
 	{
 		GetDispatcher().SendAction(API.SerializeRequest(API.actions.RUN_DEBUGEE, null));
+		GetUIProxy().InvalidateMemory();
 	}
 
     static BreakDebugee()
@@ -94,6 +96,8 @@ class GDBActions
     static SetVariable(varname, value)
     {
 	GetDispatcher().SendAction(API.SerializeRequest(API.actions.SET_VARIABLE, {name : varname, value: value}));
+
+	GetUIProxy().InvalidateMemory();
     }
 
     static GetStackTrace()
@@ -109,11 +113,12 @@ class GDBActions
     static SendConsoleInput(input)
     {
 	GetDispatcher().SendAction(API.SerializeRequest(API.actions.SEND_CONSOLE_PROGRAM_INPUT, input));
+	GetUIProxy().InvalidateMemory();
     }
 
-    static GetMemoryChunk(address_expression, size)
+    static GetMemoryChunk(address_expression, size, chunk_hash)
     {
-	GetDispatcher().SendAction(API.SerializeRequest(API.actions.GET_MEMORY_CHUNK, {expr : address_expression, size: size}));
+	GetDispatcher().SendAction(API.SerializeRequest(API.actions.GET_MEMORY_CHUNK, {expr : address_expression, size: size, hash: chunk_hash}));
     }
 
     static SetMemoryChunk(address_expression, value)
@@ -123,6 +128,8 @@ class GDBActions
 	    hex_value += Utilities.NumberToHexStringPadded(value.charCodeAt(i), 2)
 	
 	GetDispatcher().SendAction(API.SerializeRequest(API.actions.SET_MEMORY_CHUNK, {address: address_expression, contents : hex_value}));
+
+	GetUIProxy().InvalidateMemory();
     }
 }
 

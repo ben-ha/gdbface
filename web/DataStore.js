@@ -46,7 +46,7 @@ class DataStore
 		LocalVariables : [],
 		StackTrace : [],
 		Watches : {},
-		HexView : {Address : null, Memory:""},
+		HexView : {Address : null, Hash: "", Memory:"", Changed : false},
 	    };
 
 	this._callbacks = [];
@@ -84,15 +84,27 @@ class DataStore
 
     _GetHexViewInformation(data)
     {
+	this.Store.HexView.Changed = false;
+	
 	if (data.Data == undefined)
 	    return;
 
-	if (data.Data.memory == undefined)
+	if (data.Data.memory == undefined && data.Data.memoryHash == undefined)
 	    return;
 
-	
+	this.Store.HexView.Changed = true;
 	this.Store.HexView.Address = parseInt(data.Data.memory[0].begin, 16);
-	this.Store.HexView.Memory = data.Data.memory[0].contents.split(/(?=(?:..)*$)/).map((z) => String.fromCharCode(parseInt(z, 16))).join("");
+
+	if (data.Data.memory != undefined)
+	{
+	    this.Store.HexView.Memory = data.Data.memory[0].contents;
+	}
+
+	if (data.Data.memoryHash != undefined)
+	{
+	    this.Store.HexView.Changed = data.Data.memoryHash != this.Store.HexView.Hash;
+	    this.Store.HexView.Hash = data.Data.memoryHash;
+	}
     }
 
     _GetConsoleOutput(data)

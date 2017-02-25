@@ -8,8 +8,6 @@ class FileExplorer extends React.Component
     constructor(props)
     {
 	super(props);
-	this.codeview = props.CodeView;
-	console.log(this.codeview);
 	this.state = {sourcelist : []};
 	RegisterDataStoreCallback(this._OnDataStoreChanged.bind(this));
     }
@@ -27,11 +25,11 @@ class FileExplorer extends React.Component
     render()
     {
 	return (
-		<ul className="list-unstyled">
+		<div>
 		{
-		    this.state.sourcelist.map((src) => {return (<li key={src.fullname}><a onClick={this._OnSourceClick.bind(this, src.fullname, src.file)}>{src.file}</a></li>)})
+		    this.state.sourcelist.map((src) => {return (<button className="btn btn-link" key={src.fullname} onClick={this._OnSourceClick.bind(this, src.fullname, src.file)}>{src.file}</button>)})
 		}
-		</ul>
+		</div>
 	);
     }
 }

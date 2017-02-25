@@ -1,6 +1,6 @@
 import React from 'react';
 import CodeView from './CodeView.jsx';
-import uiproxyevents from '../API.js';
+import {uiproxyevents} from '../API.js';
 import {RegisterUIProxyCallback} from './UIProxy.js';
 import {RegisterDataStoreCallback} from './DataStore.js';
 
@@ -47,7 +47,7 @@ class CodeViewContainer extends React.Component
 	}
 
 	let new_views = this.state.views;
-	let new_view = (<CodeView FileName={filename} FullFileName={full_file_path} />);
+	let new_view = (<CodeView key={full_file_path} FileName={filename} FullFileName={full_file_path} />);
 	new_views.push(new_view);
 	
 	
@@ -78,14 +78,14 @@ class CodeViewContainer extends React.Component
 	    <div>
 		<ul className="nav nav-tabs">
 		{
-		    this.state.views.map((view) => {console.log(this.state.active_view == view); return (<li key={view.props.FullFileName} className={(this.state.active_view == view) ? "active" : ""}><a role="tab" data-toggle="tab" href={"#codeview_" + view.props.FileName.replace(".","_")}>{view.props.FileName}<button className="close closeTab" onClick={this.OnCloseTab.bind(this, view)} style={{"fontSize" : "18px", "marginLeft" : "15px", "color" : "red"}}>x</button></a></li>)})
+		    this.state.views.map((view) => {return (<li key={view.props.FullFileName} className={(this.state.active_view == view) ? "active" : ""}><a role="tab" data-toggle="tab" href={"#codeview_" + view.props.FileName.replace(".","_")}>{view.props.FileName}<button className="close closeTab" onClick={this.OnCloseTab.bind(this, view)} style={{"fontSize" : "18px", "marginLeft" : "15px", "color" : "red"}}>x</button></a></li>)})
 		}
 	    </ul>
 
 		<div className="tab-content">
 		{
 		this.state.views.map((view) => { return (
-			<div key={view.props.FullFileName} id={"codeview_"+view.props.FileName.replace(".","_")} className={"tab-pane " + (this.state.active_view == view ? "active" : "")}>{view}</div>)})
+			<div id={"codeview_"+view.props.FileName.replace(".","_")} className={"tab-pane " + (this.state.active_view == view ? "active" : "")}>{view}</div>)})
 		}
 	    </div>
 	   </div>

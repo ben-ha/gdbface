@@ -13,7 +13,7 @@ class ASCIICell extends React.Component
 
 	_OnValueChange(val)
 	{
-		this.props.OnValueChanged(address, val.charCodeAt(0));
+		this.props.OnValueChanged(this.state.address, val.charCodeAt(0));
 	}
 
 	_MakePrintable(ch)
@@ -26,7 +26,7 @@ class ASCIICell extends React.Component
 	render()
 	{
 		return (
-		<span key={this.state.address} style={{"float":"left", "marginRight" :"0px", "marginLeft":"0px"}}>
+		<span style={{"float":"left", "marginRight" :"0px", "marginLeft":"0px"}}>
 		<EditableTextbox Color={this.color} Size={1} MaxLength={1} Width="15px" onChange={this._OnValueChange.bind(this)} value={this._MakePrintable(this.state.content)} />		
 		</span>
 );

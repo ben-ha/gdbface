@@ -4,6 +4,7 @@ var GDBRunner = require('./gdbrunner.js');
 var GDBOutputParser = require('./gdboutputparser.js');
 var API = require('./API.js');
 var fs = require("fs");
+var crypto = require("crypto");
 const EventEmitter = require("events");
 
 class GDBEngine
@@ -43,6 +44,7 @@ class GDBEngine
 	this._api.BindAPI(API.actions.EVALUATE_EXPRESSION, this.EvaluateExpression.bind(this));
 	this._api.BindAPI(API.actions.GET_MEMORY_CHUNK, this.GetMemoryChunk.bind(this));
 	this._api.BindAPI(API.actions.SET_MEMORY_CHUNK, this.SetMemoryChunk.bind(this));
+	this._api.BindAPI(API.actions.GET_MEMORY_CHUNK_HASH, this.GetMemoryChunkHash.bind(this));
     }
 
     Start()
@@ -84,7 +86,6 @@ class GDBEngine
 
     SendConsoleInput(command)
     {
-	console.log("HERE!");
 	this._gdb_runner.SendConsoleInput(command);
     }
 
@@ -229,8 +230,29 @@ class GDBEngine
 
     GetMemoryChunk(obj)
     {
+	this._GetMemoryChunk(obj, false);
+    }
+
+    _GetMemoryChunk(obj)
+    {
+	let cb = null;
+	
+	cb = (res) => {
+	    let hash = crypto.createHash("md5");
+	    res.Data.memory[0].contents = res.Data.memory[0].contents.split(/(?=(?:..)*$)/).map((z) => String.fromCharCode(parseInt(z, 16))).join("");
+	    hash.update(res.Data.memory[0].contents);
+	    res.Data.memoryHash = hash.digest("hex")
+	    if (res.Data.memoryHash == obj.hash)
+		delete res.Data.memory; // Ugly, but assume no collisions for now
+	};
+
 	let command = "-data-read-memory-bytes";
-	this._SendCommand(command, "(" + obj.expr + ") " + obj.size);
+	this._SendCommand(command, '"' + obj.expr + '" ' + obj.size, cb);
+    }
+
+    GetMemoryChunkHash(obj)
+    {
+	this._GetMemoryChunk(obj, true);
     }
 
     SetMemoryChunk(obj)

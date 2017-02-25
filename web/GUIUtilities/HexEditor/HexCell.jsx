@@ -31,7 +31,7 @@ class HexCell extends React.Component
 	render()
 	{
 		return (
-		<span key={this.state.address} style={{"float":"left", "marginRight" : "0px", "marginLeft" :"0px"}}>
+		<span style={{"float":"left", "marginRight" : "0px", "marginLeft" :"3px"}}>
 		<EditableTextbox Color={this.color} Size={1} MaxLength={2} Width="20px" AllowedCharsRegex="[0-9A-Fa-f][0-9A-Fa-f]" onChange={this._OnValueChange.bind(this)} value={this.state.content} />		
 		</span>
 );

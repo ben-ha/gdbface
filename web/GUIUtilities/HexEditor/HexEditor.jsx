@@ -12,7 +12,6 @@ class HexEditor extends React.Component
 
 	_OnValueChanged(address, val)
 	{
-		console.log("CALLED1");
 		if (this.props.OnValueChanged != null && this.props.OnValueChanged != undefined)
 			this.props.OnValueChanged(address, val);
 	}
@@ -20,11 +19,10 @@ class HexEditor extends React.Component
 	render()
 	{
 		let rows = [];
-
 		let address = this.state.start_address;
 		for (let i = 0; i < this.state.content.length / this.state.row_elements; ++i)
 		{
-			rows.push((<HexRow StartAddress={address} Content={this.state.content.substr(i*this.state.row_elements, this.state.row_elements)} OldContent={this.state.old_content.substr(i*this.state.row_elements, this.state.row_elements)} OnValueChanged={this._OnValueChanged.bind(this)} />))
+			rows.push((<HexRow key={i} StartAddress={address} Content={this.state.content.substr(i*this.state.row_elements, this.state.row_elements)} OldContent={this.state.old_content.substr(i*this.state.row_elements, this.state.row_elements)} OnValueChanged={this._OnValueChanged.bind(this)} />))
 
 			address += this.state.row_elements;
 		}
@@ -33,7 +31,7 @@ class HexEditor extends React.Component
 		{ // Push one last row
 		  let index = Math.floor(this.state.content.length / this.state.row_elements);
 		  
-		  rows.push((<HexRow StartAddress={address} Content={this.state.content.substr(index, this.state.row_elements)} OldContent={this.state.old_content.substr(index, this.state.row_elements)} OnValueChanged={this._OnValueChanged.bind(this)} />))
+		  rows.push((<HexRow key={index} StartAddress={address} Content={this.state.content.substr(index, this.state.row_elements)} OldContent={this.state.old_content.substr(index, this.state.row_elements)} OnValueChanged={this._OnValueChanged.bind(this)} />))
 		}
 		
 		return (

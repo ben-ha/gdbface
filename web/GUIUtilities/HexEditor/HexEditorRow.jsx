@@ -26,20 +26,20 @@ class HexRow extends React.Component
 		for (let i = 0; i < this.state.content.length; ++i)
 		{
 			hex_cells.push((
-			    <HexCell Address={this.state.start + i} Content={this.state.content[i]} OldContent={this.state.oldcontent[i]} OnValueChanged={this._OnValueChanged.bind(this)} />)
+			    <HexCell key={this.state.start + i} Address={this.state.start + i} Content={this.state.content[i]} OldContent={this.state.oldcontent[i]} OnValueChanged={this._OnValueChanged.bind(this)} />)
 		)
 		}
 
 		for (let i = 0; i < this.state.content.length; ++i)
 		{
 			ascii_cells.push((
-			    <ASCIICell Address={this.state.start + i} Content={this.state.content[i]} OldContent={this.state.oldcontent[i]} OnValueChanged={this._OnValueChanged.bind(this)} />)
+			    <ASCIICell key={2*(this.state.start + i)} Address={this.state.start + i} Content={this.state.content[i]} OldContent={this.state.oldcontent[i]} OnValueChanged={this._OnValueChanged.bind(this)} />)
 		)
 		}
 
 		return (
-		<div key={this.state.start} style={{"clear": "both"}}>
-		<span style={{float:"left"}}>
+		<div style={{"clear": "both"}}>
+		<span style={{"font-family" : "monospace", float:"left"}}>
 		{Utilities.NumberToAddress(this.state.start) + ":"}
 		</span>
 		<span style={{float:"left", marginLeft:"20px"}}>

@@ -2,6 +2,9 @@ import React from 'react';
 import LocalVariable from './LocalVariable.jsx';
 import GDBActions from './GDBActions.js';
 import {RegisterDataStoreCallback} from './DataStore.js';
+import {RegisterUIProxyCallback} from './UIProxy.js';
+import {GetUIProxy} from './UIProxy.js';
+import {uiproxyevents} from '../API.js';
 
 class LocalVariables extends React.Component {
 
@@ -9,15 +12,21 @@ class LocalVariables extends React.Component {
       {
 	  super(props);
 	  RegisterDataStoreCallback(this._OnDataStoreChanged.bind(this));
+	  RegisterUIProxyCallback(uiproxyevents.ON_INVALIDATE_MEMORY, this._OnInvalidateMemory.bind(this));
 	  this.state = {localvars : []};
 	  this.require_update = true;
+      }
+
+      _OnInvalidateMemory()
+      {
+	GDBActions.GetLocalVariables();
       }
 
       _OnDataStoreChanged(data)
       {
         if (data.ProgramState == "Stopped" && this.require_update)
 	{
-	   GDBActions.GetLocalVariables(); // trigger fresh query
+	   GetUIProxy().InvalidateMemory(); // trigger fresh query - kind of ugly because why LocalVariables is responsible for invalidating all?
 	   this.require_update = false;
 	}
 

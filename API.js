@@ -26,6 +26,7 @@ var actions = {
 
 var uiproxyevents = {
     ON_OPEN_SOURCE_FILE : "onopensource",
+    ON_INVALIDATE_MEMORY : "oninvalidatemem",
 }
 
 var results =
