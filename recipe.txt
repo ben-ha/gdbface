@@ -1,3 +1,0 @@
-1. Install bootstrap and then point the js file to include the css.
-2. install css & url loaders for webpack
-3. Install bootstrap-webpack and require it in the config js of webpack!!!
