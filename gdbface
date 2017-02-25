@@ -1,0 +1,7 @@
+#!/usr/bin/nodejs
+
+var engine = require("./engine.js");
+
+var port = 5555;
+
+engine.run(port, process.argv[2], process.argv.slice(3).join(" "));

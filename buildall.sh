@@ -1,3 +1,8 @@
 echo Building...
+
+if [ ! -d dist ]; then
+mkdir dist
+fi
+
 webpack
-./gdbface.js
+cp web/index.html dist/

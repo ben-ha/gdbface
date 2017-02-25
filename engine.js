@@ -1,5 +1,4 @@
 var express = require("express");
-var config = require("./config.js");
 var path = require("path");
 var GDBEngine = require("./gdbengine.js");
 var io = require("socket.io");
