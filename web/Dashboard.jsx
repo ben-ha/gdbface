@@ -20,10 +20,10 @@ class Dashboard extends React.Component {
        	      <div className="panel panel-default">
 	      <div className="panel-body">
 	       <div id="mainarea" style={{"width":"70%", "float":"left", "minHeight":"80%", "height":"80%", "maxHeight" : "80%"}}>
-	       <div id="dashboard_fileexplorer_div" style={{"overflow" : "auto", "width":"10%", "maxWidth":"10%", "float":"left"}}>
+	       <div id="dashboard_fileexplorer_div" style={{"overflow" : "auto", "width":"20%", "maxWidth":"20%", "float":"left"}}>
 	       <FileExplorer />
 	       </div>
-	       <div id="dashboard_codeview_div" style={{"float":"left","width":"90%"}}>
+	       <div id="dashboard_codeview_div" style={{"float":"left","width":"80%"}}>
 	       <CodeViewContainer />
 	       </div>
 		</div>

@@ -73,6 +73,9 @@ class CodeViewContainer extends React.Component
     
     render()
     {
+	if (this.state.views.length == 0)
+	   return (<div></div>);
+	   
 	let a =
 	(
 	    <div>

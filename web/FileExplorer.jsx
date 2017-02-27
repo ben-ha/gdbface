@@ -27,7 +27,7 @@ class FileExplorer extends React.Component
 	return (
 		<div>
 		{
-		    this.state.sourcelist.map((src) => {return (<button className="btn btn-link" key={src.fullname} onClick={this._OnSourceClick.bind(this, src.fullname, src.file)}>{src.file}</button>)})
+		    this.state.sourcelist.map((src) => {return (<div><button className="btn btn-default btn-xs" key={src.fullname} onClick={this._OnSourceClick.bind(this, src.fullname, src.file)}><span className="glyphicon glyphicon-file"></span>{src.file}</button></div>)})
 		}
 		</div>
 	);
