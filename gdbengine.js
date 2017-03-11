@@ -61,6 +61,7 @@ class GDBEngine
 	this._api.BindAPI(API.actions.SET_MEMORY_CHUNK, this.SetMemoryChunk.bind(this));
 	this._api.BindAPI(API.actions.GET_MEMORY_CHUNK_HASH, this.GetMemoryChunkHash.bind(this));
     	this._api.BindAPI(API.actions.GET_PROGRAM_STATE, this.GetProgramState.bind(this));
+	this._api.BindAPI(API.actions.SEND_GDB_CONSOLE_INPUT, this.SendGDBConsoleInput.bind(this));
     }
 
     Start()
@@ -104,6 +105,13 @@ class GDBEngine
     SendConsoleInput(command)
     {
 	this._gdb_runner.SendConsoleInput(command);
+    }
+
+    SendGDBConsoleInput(cmd)
+    {
+	let command = "-interpreter-exec";
+	
+	this._SendCommand(command, "console " + '"' + cmd + '"');
     }
 
     AddBreakpointBySource(source_info)

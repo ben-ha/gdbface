@@ -115,9 +115,15 @@ class DataStore
     {
 	if (data.Type == results.GDB_INFERIOR_OUTPUT)
 	    this.Store.ProgramConsoleOutput += data.Data;
-    	
+
+    	if (data.Type == results.GDB_CONSOLE_OUTPUT)
+	    this.Store.GDBConsoleOutput += data.Data;
+	
 	if (this.Store.ProgramConsoleOutput > MAX_CONSOLE_OUTPUT)
-		this.Store.ProgramConsoleOutput = this.Store.ProgramConsoleOutput.substr(-MAX_CONSOLE_OUTPUT);
+	    this.Store.ProgramConsoleOutput = this.Store.ProgramConsoleOutput.substr(-MAX_CONSOLE_OUTPUT);
+
+	if (this.Store.GDBConsoleOutput > MAX_CONSOLE_OUTPUT)
+	    this.Store.GDBConsoleOutput = this.Store.GDBConsoleOutput.substr(-MAX_CONSOLE_OUTPUT);
     }
 
     _GetStackTraceInformation(data)

@@ -16,6 +16,7 @@ var actions = {
     GET_SOURCES_LIST : "get-sources-list",
     REMOVE_BREAKPOINT : "remove-breakpoint",
     SEND_CONSOLE_PROGRAM_INPUT : "send-console-input",
+    SEND_GDB_CONSOLE_INPUT : "send-gdb-console-input",
     GET_LOCAL_VARIABLES : "get-local-variables",
     SET_VARIABLE : "set-variable",
     GET_STACK_TRACE : "get-stack-trace",
@@ -39,6 +40,7 @@ var results =
 	GDB_NOP : 4,
 	GDB_ENGINE_RESULT :5,
 	GDB_ENGINE_ERROR : 6,
+	GDB_CONSOLE_OUTPUT: 7,
     }
 
 class API

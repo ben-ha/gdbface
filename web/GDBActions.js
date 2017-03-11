@@ -123,6 +123,11 @@ class GDBActions
 	GetUIProxy().InvalidateMemory();
     }
 
+    static SendGDBConsoleInput(cmd)
+    {
+	GetDispatcher().SendAction(API.SerializeRequest(API.actions.SEND_GDB_CONSOLE_INPUT, cmd));
+    }
+
     static GetMemoryChunk(address_expression, size, chunk_hash)
     {
 	GetDispatcher().SendAction(API.SerializeRequest(API.actions.GET_MEMORY_CHUNK, {expr : address_expression, size: size, hash: chunk_hash}));

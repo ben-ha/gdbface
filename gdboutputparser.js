@@ -41,7 +41,9 @@ class GDBOutputParser
 	switch (rescode)
 	{
 	    case '^':
-	        return this._HandleResultRecords(resid, restext, result);
+	    return this._HandleResultRecords(resid, restext, result);
+	    case '~':
+	    return new GDBOutput(API.results.GDB_CONSOLE_OUTPUT, resid, result);
 	    default:
 	    return new GDBOutput(API.results.GDB_ASYNC_OUTPUT, resid, this._HandleAsyncOutput(restext, result));
 	}
@@ -56,6 +58,11 @@ class GDBOutputParser
     
     _GetGDBOutputParts(trimmed_output)
     {
+	if (trimmed_output[0]=="~") // console case
+	{
+	    let matched = trimmed_output.match(/(~)"(.*)"/);
+	    return [matched[0], 0, matched[1], "", matched[2].replace("\\n", "\n").replace("\\t", "\t")];
+	}
 	let matched = trimmed_output.match(/^([0-9]*)([\^*~@&\+=])([A-Za-z-]+),(.*)/);
 	if (matched == null)
 	{

@@ -6,9 +6,13 @@ class PlainConsole extends React.Component
     constructor(props)
     {
 	super(props);
-	RegisterDataStoreCallback(this._OnGDBData.bind(this));
 	this.store_member = props.Output;
 	this.state = {output : ""};
+    }
+
+    componentDidMount()
+    {
+	RegisterDataStoreCallback(this._OnGDBData.bind(this));
     }
 
     _OnGDBData(store)
@@ -16,16 +20,18 @@ class PlainConsole extends React.Component
 	this.setState({output : store[this.store_member]});
     }
 
-    _OnNewLine(line)
+    componentDidUpdate(prevProps, prevState)
     {
+	let text_area = document.getElementById("console_" + this.store_member);
 
+	text_area.scrollTop = text_area.scrollHeight;
     }
 
     render()
     {
 	   return (
 		<div>
-		   <textarea className="form-control" rows="3" id="console_gdboutput" value={this.state.output} readOnly/>
+		   <textarea className="form-control" rows="3" id={"console_" + this.store_member} value={this.state.output} readOnly/>
 		</div>
 		    );
 	}
