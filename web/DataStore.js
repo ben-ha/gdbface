@@ -2,7 +2,6 @@ import {RegisterDispatcherCallback} from './Dispatcher.js';
 import {results} from '../API.js';
 
 var _datastore = null;
-const MAX_CONSOLE_OUTPUT = 1024;
 
 function InitDataStore(dispatcher)
 {
@@ -41,8 +40,8 @@ class DataStore
 		ProgramContext: {},
 		SourceList : [],
 		Sources : {},
-		GDBConsoleOutput : "",
-		ProgramConsoleOutput:"",
+		GDBConsoleOutput : {Changed : false, Data : ""},
+		ProgramConsoleOutput : {Changed : false, Data : ""},
 		LocalVariables : [],
 		StackTrace : [],
 		Watches : {},
@@ -113,17 +112,20 @@ class DataStore
 
     _GetConsoleOutput(data)
     {
+	this.Store.ProgramConsoleOutput.Changed = false;
+	this.Store.GDBConsoleOutput.Changed = false;
+	
 	if (data.Type == results.GDB_INFERIOR_OUTPUT)
-	    this.Store.ProgramConsoleOutput += data.Data;
+	{
+	    this.Store.ProgramConsoleOutput.Data = data.Data;
+	    this.Store.ProgramConsoleOutput.Changed = true;
+	}
 
     	if (data.Type == results.GDB_CONSOLE_OUTPUT)
-	    this.Store.GDBConsoleOutput += data.Data;
-	
-	if (this.Store.ProgramConsoleOutput > MAX_CONSOLE_OUTPUT)
-	    this.Store.ProgramConsoleOutput = this.Store.ProgramConsoleOutput.substr(-MAX_CONSOLE_OUTPUT);
-
-	if (this.Store.GDBConsoleOutput > MAX_CONSOLE_OUTPUT)
-	    this.Store.GDBConsoleOutput = this.Store.GDBConsoleOutput.substr(-MAX_CONSOLE_OUTPUT);
+	{
+	    this.Store.GDBConsoleOutput.Data = data.Data;
+	    this.Store.GDBConsoleOutput.Changed = true;
+	}
     }
 
     _GetStackTraceInformation(data)

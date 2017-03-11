@@ -10,33 +10,18 @@ class GDBConsole extends React.Component
 	super(props);
 	this.state = {input:""};
     }
-
-    _OnChange(e)
-    {
-	this.setState({input:e.target.value});
-    }
     
     _OnNewLine(line)
     {
 	GDBActions.SendGDBConsoleInput(line);
     }
 
-    _OnKeyDown(event)
-    {
-      if (event.keyCode == 13)
-      {
-         this._OnNewLine(this.state.input);
-	 this.setState({input:""});
-      }
-    }
-
     render()
     {
 	   return (
-		<div className="form-group">
-		    <PlainConsole Output="GDBConsoleOutput" />
-		    <input id="GDBConsoleInputLine" className="form-control" type="text" value={this.state.input} onChange={this._OnChange.bind(this)} onKeyDown={this._OnKeyDown.bind(this)}/>
-		    </div>
+		<div>
+		    <PlainConsole Output="GDBConsoleOutput" OnNewLine={this._OnNewLine.bind(this)} Echo={true} Prompt="(gdb)" MaxLength={1024} />
+		</div>
 		    );
 	}
 }
