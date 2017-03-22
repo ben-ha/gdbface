@@ -213,7 +213,7 @@ class GDBOutputParser
 	    }
 	    else
 		++i;
-	} while(i < str.length && str[i] != ',');
+	} while(i < str.length && (str[i] != ',' || paused));
 
 	return i;
     }
@@ -266,7 +266,7 @@ class GDBOutputParser
     
     _GetVariableInfo(text)
     {
-	let splitted = text.match(/^,?([\-A-Za-z0-9]+)=(.*)/);
+	let splitted = text.match(/^,?([_\-A-Za-z0-9]+)=(.*)/);
 	if (splitted == null)
 	    return null;
 	return [splitted[1],splitted[2]];
