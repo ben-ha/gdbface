@@ -45,6 +45,7 @@ class DataStore
 		LocalVariables : [],
 		StackTrace : [],
 		Watches : {},
+		Disassembly : {Changed : false, Data : []},
 		HexView : {Address : null, Hash: "", Memory:"", Changed : false},
 	    };
 
@@ -82,7 +83,22 @@ class DataStore
 	this._GetStackTraceInformation(data);
 	this._GetWatchInformation(data);
 	this._GetHexViewInformation(data);
+	this._GetDisassemblyInformation(data);
 	this._NotifyRegisteredModules();
+    }
+
+    _GetDisassemblyInformation(data)
+    {
+	this.Store.Disassembly.Changed = false;
+
+	if (data.Data == undefined)
+	    return;
+
+	if (data.Data.asm_insns == undefined)
+	    return;
+
+	this.Store.Disassembly.Changed = true;
+	this.Store.Disassembly.Data = data.Data.asm_insns;
     }
 
     _GetHexViewInformation(data)

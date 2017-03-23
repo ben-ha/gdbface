@@ -128,6 +128,11 @@ class GDBActions
 	GetDispatcher().SendAction(API.SerializeRequest(API.actions.SEND_GDB_CONSOLE_INPUT, cmd));
     }
 
+    static Disassemble(start_address, end_address)
+    {
+	GetDispatcher().SendAction(API.SerializeRequest(API.actions.DISASSEMBLE, {start_address : start_address, end_address : end_address}));
+    }
+    
     static GetMemoryChunk(address_expression, size, chunk_hash)
     {
 	GetDispatcher().SendAction(API.SerializeRequest(API.actions.GET_MEMORY_CHUNK, {expr : address_expression, size: size, hash: chunk_hash}));

@@ -3,11 +3,5 @@ var parser = require('./gdboutputparser.js');
 var z = new parser.GDBOutputParser();
 
 
-var q = z.Parse('^done,bkpt={number="1",thread-groups=["i1"]}');
-console.log(q.Data["bkpt"]);
-
-var q = z.Parse('^done,bkpt={number="1",type="breakpoint",disp="keep",enabled="y",addr="0x08048564",func="main",file="myprog.c",fullname="/home/nickrob/myprog.c",line="68",thread-groups=["i1"],times="0"}');
-
-console.log(q.Data["bkpt"]);
-
-console.log(q.Data["bkpt"]["enabled"]);
+var q = z.Parse('^done,asm_insns=[{address="0x0000000000400646",func-name="main",offset="0",inst="push   %rbp"},{address="0x0000000000400647",func-name="main",offset="1",inst="mov    %rsp,%rbp"},{address="0x000000000040064a",func-name="main",offset="4",inst="sub    $0x20,%rsp"},{address="0x000000000040064e",func-name="main",offset="8",inst="mov    %edi,-0x14(%rbp)"},{address="0x0000000000400651",func-name="main",offset="11",inst="mov    %rsi,-0x20(%rbp)"},{address="0x0000000000400655",func-name="main",offset="15",inst="mov    %fs:0x28,%rax"},{address="0x000000000040065e",func-name="main",offset="24",inst="mov    %rax,-0x8(%rbp)"},{address="0x0000000000400662",func-name="main",offset="28",inst="xor    %eax,%eax"},{address="0x0000000000400664",func-name="main",offset="30",inst="movl   $0x0,-0xc(%rbp)"},{address="0x000000000040066b",func-name="main",offset="37",inst="mov    -0x14(%rbp),%eax"},{address="0x000000000040066e",func-name="main",offset="40",inst="mov    %eax,%esi"},{address="0x0000000000400670",func-name="main",offset="42",inst="mov    $0x400778,%edi"},{address="0x0000000000400675",func-name="main",offset="47",inst="mov    $0x0,%eax"},{address="0x000000000040067a",func-name="main",offset="52",inst="callq  0x400510 <printf@plt>"},{address="0x000000000040067f",func-name="main",offset="57",inst="lea    -0xc(%rbp),%rax"}]');
+console.log(q);

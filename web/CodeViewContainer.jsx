@@ -1,5 +1,6 @@
 import React from 'react';
 import CodeView from './CodeView.jsx';
+import AssemblyView from './AssemblyView.jsx';
 import {uiproxyevents} from '../API.js';
 import {RegisterUIProxyCallback} from './UIProxy.js';
 import {RegisterDataStoreCallback} from './DataStore.js';
@@ -83,13 +84,20 @@ class CodeViewContainer extends React.Component
 		{
 		    this.state.views.map((view) => {return (<li key={view.props.FullFileName} className={(this.state.active_view == view) ? "active" : ""}><a role="tab" data-toggle="tab" href={"#codeview_" + view.props.FileName.replace(".","_")}>{view.props.FileName}<button className="close closeTab" onClick={this.OnCloseTab.bind(this, view)} style={{"fontSize" : "18px", "marginLeft" : "15px", "color" : "red"}}>x</button></a></li>)})
 		}
-	    </ul>
+		   <li key="assemblyview" style={{"float":"right"}}><a role="tab" data-toggle="tab" href="#codeview_assemblyview">Assembly view</a></li>
+
+		    </ul>
 
 		<div className="tab-content">
 		{
 		this.state.views.map((view) => { return (
-			<div id={"codeview_"+view.props.FileName.replace(".","_")} className={"tab-pane " + (this.state.active_view == view ? "active" : "")}>{view}</div>)})
-		}
+		    <div id={"codeview_"+view.props.FileName.replace(".","_")} className={"tab-pane " + (this.state.active_view == view ? "active" : "")}>{view}</div>)})
+		    }
+
+		    <div id="codeview_assemblyview" className="tab-pane">
+			<AssemblyView />
+		    </div>
+	    
 	    </div>
 	   </div>
 	);

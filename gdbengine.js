@@ -6,6 +6,7 @@ var API = require('./API.js');
 var fs = require("fs");
 var crypto = require("crypto");
 const EventEmitter = require("events");
+const util = require("util");
 
 class GDBEngine
 {
@@ -62,6 +63,7 @@ class GDBEngine
 	this._api.BindAPI(API.actions.GET_MEMORY_CHUNK_HASH, this.GetMemoryChunkHash.bind(this));
     	this._api.BindAPI(API.actions.GET_PROGRAM_STATE, this.GetProgramState.bind(this));
 	this._api.BindAPI(API.actions.SEND_GDB_CONSOLE_INPUT, this.SendGDBConsoleInput.bind(this));
+	this._api.BindAPI(API.actions.DISASSEMBLE, this.Disassemble.bind(this));
     }
 
     Start()
@@ -299,6 +301,15 @@ class GDBEngine
     {
 	let command="-data-write-memory-bytes";
 	this._SendCommand(command, obj.address + " " + obj.contents);
+    }
+
+    Disassemble(obj)
+    {
+	let command="-data-disassemble";
+	let end_address = (obj.end_address != undefined) ? obj.end_address : util.format("%s + 60", obj.start_address);
+
+	this._SendCommand(command, util.format('-s "%s" -e "%s" -- 0', obj.start_address, end_address));
+	
     }
     
     _SerializeGDBEngineResult(obj)
