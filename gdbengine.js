@@ -48,6 +48,7 @@ class GDBEngine
 	this._api.BindAPI(API.actions.RESUME_DEBUGEE, this.ResumeDebugee.bind(this));
 	this._api.BindAPI(API.actions.ADD_BREAKPOINT_FUNCNAME, this.AddBreakpointByFuncName.bind(this));
 	this._api.BindAPI(API.actions.ADD_BREAKPOINT_SOURCE, this.AddBreakpointBySource.bind(this));
+	this._api.BindAPI(API.actions.ADD_BREAKPOINT_ADDRESS, this.AddBreakpointByAddress.bind(this));
 	this._api.BindAPI(API.actions.DISABLE_BREAKPOINT, this.DisableBreakpoint.bind(this));
 	this._api.BindAPI(API.actions.ENABLE_BREAKPOINT, this.EnableBreakpoint.bind(this));
 	this._api.BindAPI(API.actions.GET_SOURCE_FILE, this.GetSourceFile.bind(this));

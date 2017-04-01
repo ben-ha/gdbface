@@ -54,6 +54,11 @@ class GDBActions
 	GetDispatcher().SendAction(API.SerializeRequest(API.actions.ADD_BREAKPOINT_FUNCNAME, funcname));
     }
 
+    static AddBreakpointByAddress(address)
+    {
+	GetDispatcher().SendAction(API.SerializeRequest(API.actions.ADD_BREAKPOINT_ADDRESS, address));
+    }
+
     static AddBreakpointBySource(filename, line)
     {
 	GetDispatcher().SendAction(API.SerializeRequest(API.actions.ADD_BREAKPOINT_SOURCE, {'filename' : filename, 'line' : line}));

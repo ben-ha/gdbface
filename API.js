@@ -9,6 +9,7 @@ var actions = {
     RESUME_DEBUGEE : "resume-debugee",
     ADD_BREAKPOINT_FUNCNAME : "add-breakpoint-funcname",
     ADD_BREAKPOINT_SOURCE : "add-breakpoint-source",
+    ADD_BREAKPOINT_ADDRESS : "add-breakpoint-address",
     GET_BREAKPOINT_LIST : "get-breakpoints",
     DISABLE_BREAKPOINT : "disable-breakpoint",
     ENABLE_BREAKPOINT : "enable-breakpoint",

@@ -24,10 +24,7 @@ class AssemblyView extends React.Component
 
     
     _PopulateControl(store)
-    {
-	if (!store.Disassembly.Changed)
-	    return;
-	
+    {	
 	this.setState({frameinfo : store.ProgramFrameInformation, programstate : store.ProgramState, breakpoints : store.Breakpoints, instructions : store.Disassembly.Data});
 
 	this._PopulateAssemblyContent(store.Disassembly.Data);
@@ -45,9 +42,9 @@ class AssemblyView extends React.Component
     
     _PopulateGutters()
     {
-	//this.editor.clearGutter("breakpoints");
+	this.editor.clearGutter("breakpoints");
 
-	//this._FillBreakpoints();
+	this._FillBreakpoints();
 	
 	//if (this.state.frameinfo.fullname == this.GetFullFileName())
 	//  if (this.state.programstate == "Stopped")
@@ -57,12 +54,14 @@ class AssemblyView extends React.Component
 
     _FillBreakpoints()
     {
-
 	for (let i = 0; i < this.state.breakpoints.length; ++i)
 	{
 	    let bkpt = this.state.breakpoints[i];
-	    if (bkpt.fullname == this.GetFullFileName())
-		this.editor.setGutterMarker(parseInt(bkpt.line) - 1, "breakpoints", this._CreateBreakpointElement(bkpt.enabled == "y"));
+
+	    let insn = this.state.instructions.findIndex((insn) => bkpt.addr == insn.address);
+
+	    if (insn != -1)
+		this.editor.setGutterMarker(insn, "breakpoints", this._CreateBreakpointElement(bkpt.enabled == "y"));
 	}
     }
 
@@ -77,24 +76,17 @@ class AssemblyView extends React.Component
 
     _FindBreakpointByLine(line)
     {
+	if (this.state.instructions[line] == undefined)
+	    return null;
+	
 	for (let i = 0; i < this.state.breakpoints.length; ++i)
 	{
 	    let bkpt = this.state.breakpoints[i];
-	    if (bkpt.fullname == this.GetFullFileName() && bkpt.line == line)
+	    if (bkpt.addr == this.state.instructions[line].address)
 		return this.state.breakpoints[i];
 	}
 
 	return null; 
-    }
-
-    _CreateAddressElement(address)
-    {
-	let wrapping_div = document.createElement("div");
-
-	wrapping_div.innerText = address;
-	wrapping_div.style.width="100px";
-
-	return wrapping_div;
     }
 
     _CreateBreakpointElement(enabled)
@@ -133,9 +125,9 @@ class AssemblyView extends React.Component
 
     _OnGutterClick(editor, line)
     {
-	let bkpt = this._FindBreakpointByLine(line + 1);
+	let bkpt = this._FindBreakpointByLine(line);
 	if (bkpt == null)
-	    GDBActions.AddBreakpointBySource(this.GetFullFileName(), line + 1);
+	    GDBActions.AddBreakpointByAddress(this.state.instructions[line].address);
 	else
 	    GDBActions.RemoveBreakpoint(bkpt.number);
     }
