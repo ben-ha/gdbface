@@ -166,14 +166,25 @@ class AssemblyView extends React.Component
 
     _OnInput(input)
     {
+	this.setState({input : input});
 	GDBActions.Disassemble(input);
+    }
+
+    _ChangeDisassemblyFlavor(is_intel)
+    {
+	GDBActions.SetDisassemblyFlavor(is_intel);
+
+	if (this.state.input != undefined && this.state.input != null)
+	    GDBActions.Disassemble(this.state.input);
     }
     
     render()
     {
 	let obj = (
 	<div>
-	<EditableTextbox WithBorder={true} onChange={this._OnInput.bind(this)}/>
+	    <EditableTextbox WithBorder={true} onChange={this._OnInput.bind(this)}/>
+	    <label className="radio-inline"><input type="radio" name="asmflavor" onChange={this._ChangeDisassemblyFlavor.bind(this,false)} defaultChecked/>AT&T</label>
+	    <label className="radio-inline"><input type="radio" name="asmflavor" onChange={this._ChangeDisassemblyFlavor.bind(this, true)} />Intel</label>
 <div ref="codeview_assemblyview"></div>
         </div>
 );

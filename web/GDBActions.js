@@ -153,6 +153,13 @@ class GDBActions
 
 	GetUIProxy().InvalidateMemory();
     }
+
+    static SetDisassemblyFlavor(is_intel)
+    {
+	let flavor = is_intel ? "intel" : "att";
+
+	GDBActions.SendGDBConsoleInput("set disassembly-flavor " + flavor);
+    }
 }
 
 module.exports = GDBActions;
