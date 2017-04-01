@@ -45,11 +45,14 @@ class AssemblyView extends React.Component
 	this.editor.clearGutter("breakpoints");
 
 	this._FillBreakpoints();
-	
-	//if (this.state.frameinfo.fullname == this.GetFullFileName())
-	//  if (this.state.programstate == "Stopped")
-	//    this.editor.setGutterMarker(parseInt(this.state.frameinfo.line) - 1, "breakpoints", this._CreateActiveLineElement(this._IsActiveLineWithBreakpoint()));
-	
+
+	if (this.state.programstate == "Stopped")
+	{
+	    let active_line  = this._FindLineByAddress(this.state.frameinfo.addr);
+
+	    if (active_line != -1)
+		this.editor.setGutterMarker(active_line, "breakpoints", this._CreateActiveLineElement(this._IsActiveLineWithBreakpoint()));
+	}
     }
 
     _FillBreakpoints()
@@ -67,11 +70,18 @@ class AssemblyView extends React.Component
 
     _IsActiveLineWithBreakpoint()
     {
-
 	if (this.state.frameinfo.line == undefined)
 	    return;
 	
 	return this._FindBreakpointByLine(this.state.frameinfo.line) != null;
+    }
+
+    _FindLineByAddress(address)
+    {
+	if (this.state.instructions == undefined || this.state.instructions == null)
+	    return;
+
+	return this.state.instructions.findIndex((insn) => insn.address == address);
     }
 
     _FindBreakpointByLine(line)
