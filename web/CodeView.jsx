@@ -40,6 +40,7 @@ class CodeView extends React.Component
 	    {
 		this.sent_code_request = true;
 		this.editor.doc.setValue(store.Sources[this.GetFullFileName()]);
+		this.editor.refresh();
 		this.got_code = true;
 		return;
 	    }
@@ -158,7 +159,7 @@ class CodeView extends React.Component
     
     componentDidMount()
     {
-	this.editor = CodeMirror(this.refs["codeview_"+this.state.fullfilename], {mode: "text/x-c++src", readOnly : true, lineNumbers: true, gutters : ["breakpoints", "CodeView-linenumbers", "notes"]});
+	this.editor = CodeMirror(this.refs["codeview_"+this.state.fullfilename], {mode: "text/x-c++src", readOnly : true, lineNumbers: true, gutters : ["breakpoints"]});
 
 	this.editor.on("gutterClick", this._OnGutterClick.bind(this)); 
 	this._InitializeCodeViewIfNeeded(GetDataStore().Store);

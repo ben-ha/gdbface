@@ -25,26 +25,33 @@ class AssemblyView extends React.Component
     
     _PopulateControl(store)
     {
+	if (!store.Disassembly.Changed)
+	    return;
+	
 	this.setState({frameinfo : store.ProgramFrameInformation, programstate : store.ProgramState, breakpoints : store.Breakpoints, instructions : store.Disassembly.Data});
 
 	this._PopulateAssemblyContent(store.Disassembly.Data);
+	this._PopulateGutters();
+
+	this.editor.refresh();
     }
 
     _PopulateAssemblyContent(assembly_instructions)
     {
-	this.editor.doc.setValue(assembly_instructions.reduce((str, cur) => str + cur.inst + "\n", ""));
+	let val = assembly_instructions.reduce((str, cur) => str + cur.inst + "\n", "");
+	
+	this.editor.doc.setValue(val.slice(0, -1));
     }
     
-    _PopulateView()
+    _PopulateGutters()
     {
-	this.editor.clearGutter("breakpoints");
+	//this.editor.clearGutter("breakpoints");
 
-	this._FillBreakpoints();
+	//this._FillBreakpoints();
 	
-	if (this.state.frameinfo.fullname == this.GetFullFileName())
-	   if (this.state.programstate == "Stopped")
-	    this.editor.setGutterMarker(parseInt(this.state.frameinfo.line) - 1, "breakpoints", this._CreateActiveLineElement(this._IsActiveLineWithBreakpoint()));
-
+	//if (this.state.frameinfo.fullname == this.GetFullFileName())
+	//  if (this.state.programstate == "Stopped")
+	//    this.editor.setGutterMarker(parseInt(this.state.frameinfo.line) - 1, "breakpoints", this._CreateActiveLineElement(this._IsActiveLineWithBreakpoint()));
 	
     }
 
@@ -78,6 +85,16 @@ class AssemblyView extends React.Component
 	}
 
 	return null; 
+    }
+
+    _CreateAddressElement(address)
+    {
+	let wrapping_div = document.createElement("div");
+
+	wrapping_div.innerText = address;
+	wrapping_div.style.width="100px";
+
+	return wrapping_div;
     }
 
     _CreateBreakpointElement(enabled)
@@ -127,7 +144,7 @@ class AssemblyView extends React.Component
     {
 	RegisterDataStoreCallback(this._OnDataStoreChanged.bind(this));
 	
-	this.editor = CodeMirror(this.refs["codeview_assemblyview"], {mode: "text/x-gas", architecture: "x86", readOnly : true, lineNumbers: true, gutters : ["breakpoints", "CodeView-linenumbers", "notes"]});
+	this.editor = CodeMirror(this.refs["codeview_assemblyview"], {mode: "gas", architecture: "x86", readOnly : true, lineNumbers: true, lineNumberFormatter: this._CodeMirrorLineNumberFormatter.bind(this), gutters : ["breakpoints"]});
 
 	this.editor.on("gutterClick", this._OnGutterClick.bind(this)); 
     }
@@ -135,6 +152,14 @@ class AssemblyView extends React.Component
     componentWillUnmount()
     {
 	UnregisterDataStoreCallback(this._callback);
+    }
+
+    _CodeMirrorLineNumberFormatter(num)
+    {
+	if (this.state == null || this.state.instructions == null || this.state.instructions[num - 1] == undefined)
+	    return String(num);
+	
+	return this.state.instructions[num - 1].address;
     }
 
     _OnInput(input)
