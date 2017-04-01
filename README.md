@@ -1,16 +1,18 @@
 # GDBFace
 
-GDBFace is a frontend to the popular debugger GDB, written in Javascript.
+GDBFace is a web frontend to the popular debugger GDB, written in Javascript.
 
 Currently implemented features:
 
 	1. Source code explorer
-	2. Breakpoint management (Through source)
-	3. Local variables view and change
-	4. Watches
-	5. Callstack
-	6. Input/Output from the debugged application
-	7. Memory view 
+	2. Assembly view
+	3. Breakpoint management (Through source and assembly)
+	4. Local variables view and change
+	5. Watches
+	6. Callstack
+	7. Input/Output from the debugged application
+	8. GDB command console
+	9. Memory view
 
 ## Building
 
@@ -29,7 +31,8 @@ Currently implemented features:
 
 	1. ./gdbface <path to program> <arguments>
 	2. ./gdbface -p <pid>
-		Note: Compile your program with -g flag
+
+	Note: Compile your program with -g flag for best results
 		
 ## License
 
