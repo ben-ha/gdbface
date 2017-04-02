@@ -49,6 +49,11 @@ class GDBActions
 	GetDispatcher().SendAction(API.SerializeRequest(API.actions.STEP_OVER, null));
     }
 
+    static StepInstruction()
+    {
+	GetDispatcher().SendAction(API.SerializeRequest(API.actions.STEP_INSTRUCTION, null));
+    }
+
     static AddBreakpointByFuncName(funcname)
     {
 	GetDispatcher().SendAction(API.SerializeRequest(API.actions.ADD_BREAKPOINT_FUNCNAME, funcname));

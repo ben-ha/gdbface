@@ -6,6 +6,7 @@ var actions = {
     BREAK_DEBUGEE : "break-debugee",
     STEP_INTO : "step-into",
     STEP_OVER : "step-over",
+    STEP_INSTRUCTION : "step-instruction",
     RESUME_DEBUGEE : "resume-debugee",
     ADD_BREAKPOINT_FUNCNAME : "add-breakpoint-funcname",
     ADD_BREAKPOINT_SOURCE : "add-breakpoint-source",

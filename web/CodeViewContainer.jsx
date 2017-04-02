@@ -16,7 +16,7 @@ class CodeViewContainer extends React.Component
     }
 
     _OnGDBData(store)
-    {
+    {	
 	if (store.ProgramFrameInformation.fullname == undefined)
 	    return;
 	
@@ -31,7 +31,7 @@ class CodeViewContainer extends React.Component
 
 	this.setState({active_view : cv});
     }
-    
+  
     _OnOpenFileRequest(request)
     {
 	this.AddCodeView(request["fullpath"], request["caption"]);
@@ -84,7 +84,7 @@ class CodeViewContainer extends React.Component
 		{
 		    this.state.views.map((view) => {return (<li key={view.props.FullFileName} className={(this.state.active_view == view) ? "active" : ""}><a role="tab" data-toggle="tab" href={"#codeview_" + view.props.FileName.replace(".","_")}>{view.props.FileName}<button className="close closeTab" onClick={this.OnCloseTab.bind(this, view)} style={{"fontSize" : "18px", "marginLeft" : "15px", "color" : "red"}}>x</button></a></li>)})
 		}
-		   <li key="assemblyview" style={{"float":"right"}}><a role="tab" data-toggle="tab" href="#codeview_assemblyview">Assembly view</a></li>
+		   <li key="assemblyview" style={{"float":"right"}} className={(this.state.active_view == "assembly" ? "active" : "")}><a role="tab" data-toggle="tab" href="#codeview_assemblyview">Assembly view</a></li>
 
 		    </ul>
 

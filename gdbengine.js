@@ -45,6 +45,7 @@ class GDBEngine
 	this._api.BindAPI(API.actions.BREAK_DEBUGEE, this.Break.bind(this));
 	this._api.BindAPI(API.actions.STEP_INTO, this.StepInto.bind(this));
 	this._api.BindAPI(API.actions.STEP_OVER, this.StepOver.bind(this));
+	this._api.BindAPI(API.actions.STEP_INSTRUCTION, this.StepInstruction.bind(this));
 	this._api.BindAPI(API.actions.RESUME_DEBUGEE, this.ResumeDebugee.bind(this));
 	this._api.BindAPI(API.actions.ADD_BREAKPOINT_FUNCNAME, this.AddBreakpointByFuncName.bind(this));
 	this._api.BindAPI(API.actions.ADD_BREAKPOINT_SOURCE, this.AddBreakpointBySource.bind(this));
@@ -182,6 +183,13 @@ class GDBEngine
     StepOver()
     {
 	let cmd = "-exec-until";
+
+	this._SendCommand(cmd, "");
+    }
+
+    StepInstruction()
+    {
+	let cmd = "-exec-next-instruction"
 
 	this._SendCommand(cmd, "");
     }

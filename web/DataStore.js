@@ -182,7 +182,7 @@ class DataStore
 
 	if (data.Data.stopped != undefined)
 	    this.Store.ProgramState = "Stopped";
-	
+
 	if (data.Data["thread-group-started"] != undefined)
 	    this.Store.PID = data.Data["thread-group-started"].pid;
     }
