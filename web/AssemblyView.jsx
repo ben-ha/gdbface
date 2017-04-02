@@ -51,7 +51,7 @@ class AssemblyView extends React.Component
 	    let active_line  = this._FindLineByAddress(this.state.frameinfo.addr);
 
 	    if (active_line != -1)
-		this.editor.setGutterMarker(active_line, "breakpoints", this._CreateActiveLineElement(this._IsActiveLineWithBreakpoint()));
+		this.editor.setGutterMarker(active_line, "breakpoints", this._CreateActiveLineElement(this._GetActiveAddressBreakpoint()));
 	}
     }
 
@@ -68,12 +68,17 @@ class AssemblyView extends React.Component
 	}
     }
 
-    _IsActiveLineWithBreakpoint()
+    _GetActiveAddressBreakpoint()
     {
-	if (this.state.frameinfo.line == undefined)
-	    return;
+	if (this.state.frameinfo.address == undefined)
+	    return false;
+
+	let line = this._FindLineByAddress(this.state.frameinfo.address);
+
+	if (line == undefined)
+	    return false;
 	
-	return this._FindBreakpointByLine(this.state.frameinfo.line) != null;
+	return this._FindBreakpointByLine(line);
     }
 
     _FindLineByAddress(address)
@@ -111,12 +116,12 @@ class AssemblyView extends React.Component
 	return wrapping_div;
     }
     
-    _CreateActiveLineElement(is_breakpoint)
+    _CreateActiveLineElement(active_bkpt)
     {
 	let wrapping_div = null;
 
-	if (is_breakpoint)
-	    wrapping_div = this._CreateBreakpointElement();
+	if (active_bkpt != null)
+	    wrapping_div = this._CreateBreakpointElement(active_bkpt.enabled == "y");
 	else
 	    wrapping_div = document.createElement("div");
 

@@ -76,9 +76,10 @@ class CodeView extends React.Component
 	this._FillBreakpoints();
 	
 	if (this.state.frameinfo.fullname == this.GetFullFileName())
-	   if (this.state.programstate == "Stopped")
-	    this.editor.setGutterMarker(parseInt(this.state.frameinfo.line) - 1, "breakpoints", this._CreateActiveLineElement(this._IsActiveLineWithBreakpoint()));
-
+	    if (this.state.programstate == "Stopped")
+		{
+	    this.editor.setGutterMarker(parseInt(this.state.frameinfo.line) - 1, "breakpoints", this._CreateActiveLineElement(this._GetActiveLineBreakpoint()));
+		}
 	
     }
 
@@ -93,13 +94,12 @@ class CodeView extends React.Component
 	}
     }
 
-    _IsActiveLineWithBreakpoint()
+    _GetActiveLineBreakpoint()
     {
-
 	if (this.state.frameinfo.line == undefined)
 	    return;
 	
-	return this._FindBreakpointByLine(this.state.frameinfo.line) != null;
+	return this._FindBreakpointByLine(this.state.frameinfo.line);
     }
 
     _FindBreakpointByLine(line)
@@ -126,12 +126,12 @@ class CodeView extends React.Component
 	return wrapping_div;
     }
     
-    _CreateActiveLineElement(is_breakpoint)
+    _CreateActiveLineElement(active_bkpt)
     {
 	let wrapping_div = null;
 
-	if (is_breakpoint)
-	    wrapping_div = this._CreateBreakpointElement();
+	if (active_bkpt != null)
+	    wrapping_div = this._CreateBreakpointElement(active_bkpt.enabled == "y");
 	else
 	    wrapping_div = document.createElement("div");
 
