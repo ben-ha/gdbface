@@ -73,7 +73,8 @@ class ControlKeys extends React.Component
 			<div className="btn-group">
 			<button className="btn btn-primary" onClick={GDBActions.StepInto}>Step Into</button>
 			<button className="btn btn-primary" onClick={GDBActions.StepOver}>Step Over</button>
-			<button className="btn btn-primary" onClick={GDBActions.StepInstruction}>Step Instruction</button>
+			<button className="btn btn-primary" onClick={GDBActions.StepIntoInstruction}>Step Into Instruction</button>
+			<button className="btn btn-primary" onClick={GDBActions.StepOverInstruction}>Step Over Instruction</button>
 			</div>
 			</div>
 			<div className="col-sm-1">

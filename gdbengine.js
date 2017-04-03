@@ -187,9 +187,12 @@ class GDBEngine
 	this._SendCommand(cmd, "");
     }
 
-    StepInstruction()
+    StepInstruction(step_over)
     {
-	let cmd = "-exec-next-instruction"
+	let cmd = "-exec-step-instruction"
+
+	if (step_over)
+	    cmd = "-exec-next-instruction"
 
 	this._SendCommand(cmd, "");
     }
