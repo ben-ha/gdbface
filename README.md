@@ -14,6 +14,12 @@ Currently implemented features:
 	8. GDB command console
 	9. Memory view
 
+## Screenshots
+
+![Source debugging](/docs/screenshots/src_debug.png?raw=true "Source debugging with program console")
+![Assembly view](/docs/screenshots/asm.png?raw=true "Assembly view")
+![Hex view](/docs/screenshots/hex.png?raw=true "Hex view")
+
 ## Building
 
 ### Prerequisites
