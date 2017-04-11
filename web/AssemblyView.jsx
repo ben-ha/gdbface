@@ -24,10 +24,17 @@ class AssemblyView extends React.Component
 
     
     _PopulateControl(store)
-    {	
-	this.setState({frameinfo : store.ProgramFrameInformation, programstate : store.ProgramState, breakpoints : store.Breakpoints, instructions : store.Disassembly.Data});
+    {
+	// There is no need for react setState because I manually update the view
+	// Also setState is asynchronous which is a pain
+	this.frameinfo = store.ProgramFrameInformation;
+	this.programstate = store.ProgramState;
+	this.breakpoints = store.Breakpoints;
+	this.instructions = store.Disassembly.Data;
 
-	this._PopulateAssemblyContent(store.Disassembly.Data);
+	console.log("GGG");
+	console.log(this.frameinfo);
+	this._PopulateAssemblyContent(this.instructions);
 	this._PopulateGutters();
 
 	this.editor.refresh();
@@ -46,9 +53,9 @@ class AssemblyView extends React.Component
 
 	this._FillBreakpoints();
 
-	if (this.state.programstate == "Stopped")
+	if (this.programstate == "Stopped" && this.frameinfo != undefined)
 	{
-	    let active_line  = this._FindLineByAddress(this.state.frameinfo.addr);
+	    let active_line  = this._FindLineByAddress(this.frameinfo.addr);
 
 	    if (active_line != -1)
 		this.editor.setGutterMarker(active_line, "breakpoints", this._CreateActiveLineElement(this._GetActiveAddressBreakpoint()));
@@ -57,11 +64,11 @@ class AssemblyView extends React.Component
 
     _FillBreakpoints()
     {
-	for (let i = 0; i < this.state.breakpoints.length; ++i)
+	for (let i = 0; i < this.breakpoints.length; ++i)
 	{
-	    let bkpt = this.state.breakpoints[i];
+	    let bkpt = this.breakpoints[i];
 
-	    let insn = this.state.instructions.findIndex((insn) => bkpt.addr == insn.address);
+	    let insn = this.instructions.findIndex((insn) => bkpt.addr == insn.address);
 
 	    if (insn != -1)
 		this.editor.setGutterMarker(insn, "breakpoints", this._CreateBreakpointElement(bkpt.enabled == "y"));
@@ -70,35 +77,35 @@ class AssemblyView extends React.Component
 
     _GetActiveAddressBreakpoint()
     {
-	if (this.state.frameinfo.address == undefined)
-	    return false;
+	if (this.frameinfo.addr == undefined)
+	    return null;
 
-	let line = this._FindLineByAddress(this.state.frameinfo.address);
+	let line = this._FindLineByAddress(this.frameinfo.addr);
 
 	if (line == undefined)
-	    return false;
+	    return null;
 	
 	return this._FindBreakpointByLine(line);
     }
 
     _FindLineByAddress(address)
     {
-	if (this.state.instructions == undefined || this.state.instructions == null)
+	if (this.instructions == undefined || this.instructions == null)
 	    return;
 
-	return this.state.instructions.findIndex((insn) => insn.address == address);
+	return this.instructions.findIndex((insn) => insn.address == address);
     }
 
     _FindBreakpointByLine(line)
     {
-	if (this.state.instructions[line] == undefined)
+	if (this.instructions[line] == undefined)
 	    return null;
 	
-	for (let i = 0; i < this.state.breakpoints.length; ++i)
+	for (let i = 0; i < this.breakpoints.length; ++i)
 	{
-	    let bkpt = this.state.breakpoints[i];
-	    if (bkpt.addr == this.state.instructions[line].address)
-		return this.state.breakpoints[i];
+	    let bkpt = this.breakpoints[i];
+	    if (bkpt.addr == this.instructions[line].address)
+		return this.breakpoints[i];
 	}
 
 	return null; 
@@ -122,7 +129,7 @@ class AssemblyView extends React.Component
 
 	if (active_bkpt != null)
 	    wrapping_div = this._CreateBreakpointElement(active_bkpt.enabled == "y");
-	else
+		else
 	    wrapping_div = document.createElement("div");
 
 	let span = document.createElement("span");
@@ -142,7 +149,7 @@ class AssemblyView extends React.Component
     {
 	let bkpt = this._FindBreakpointByLine(line);
 	if (bkpt == null)
-	    GDBActions.AddBreakpointByAddress(this.state.instructions[line].address);
+	    GDBActions.AddBreakpointByAddress(this.instructions[line].address);
 	else
 	    GDBActions.RemoveBreakpoint(bkpt.number);
     }
@@ -163,15 +170,14 @@ class AssemblyView extends React.Component
 
     _CodeMirrorLineNumberFormatter(num)
     {
-	if (this.state == null || this.state.instructions == null || this.state.instructions[num - 1] == undefined)
+	if (this.instructions == null || this.instructions[num - 1] == undefined)
 	    return String(num);
 	
-	return this.state.instructions[num - 1].address;
+	return this.instructions[num - 1].address;
     }
 
     _OnInput(input)
     {
-	this.setState({input : input});
 	GDBActions.Disassemble(input);
     }
 
@@ -179,8 +185,8 @@ class AssemblyView extends React.Component
     {
 	GDBActions.SetDisassemblyFlavor(is_intel);
 
-	if (this.state.input != undefined && this.state.input != null)
-	    GDBActions.Disassemble(this.state.input);
+	if (this.input != undefined && this.input != null)
+	    GDBActions.Disassemble(this.input);
     }
     
     render()
