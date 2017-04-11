@@ -37,9 +37,10 @@ Currently implemented features:
 
 	1. ./gdbface <path to program> <arguments>
 	2. ./gdbface -p <pid>
+	3. Open a browser and point it to http://localhost:5555 (This will change in the future when the project stabilizes)
 
 	Note: Compile your program with -g flag for best results
-		
+
 ## License
 
 See LICENSE file
