@@ -19,25 +19,16 @@ class CodeViewContainer extends React.Component
     {	
 	if (store.ProgramFrameInformation.fullname == undefined)
 	    return;
-	
-	let cv = this.FindCodeView(store.ProgramFrameInformation.fullname);
 
-	if (cv == null)
-	{
-	    this.AddCodeView(store.ProgramFrameInformation.fullname, store.ProgramFrameInformation.file);
-
-	    return;
-	}
-
-	this.setState({active_view : cv});
+	this.AddOrShowCodeView(store.ProgramFrameInformation.fullname, store.ProgramFrameInformation.file);
     }
   
     _OnOpenFileRequest(request)
     {
-	this.AddCodeView(request["fullpath"], request["caption"]);
+	this.AddOrShowCodeView(request["fullpath"], request["caption"]);
     }
 
-    AddCodeView(full_file_path, filename)
+    AddOrShowCodeView(full_file_path, filename)
     {
 	let existing_code_view = this.FindCodeView(full_file_path);
 

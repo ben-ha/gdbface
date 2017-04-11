@@ -127,6 +127,13 @@ class GDBActions
 	GetDispatcher().SendAction(API.SerializeRequest(API.actions.GET_STACK_TRACE, null));
     }
 
+    static SelectStackFrame(frame_num)
+    {
+	GetDispatcher().SendAction(API.SerializeRequest(API.actions.SELECT_STACK_FRAME, frame_num));
+
+	GDBActions.GetFullInfo();
+    }
+    
     static EvaluateExpression(expr_id, expr)
     {
 	GetDispatcher().SendAction(API.SerializeRequest(API.actions.EVALUATE_EXPRESSION, {id : expr_id, data: expr}));

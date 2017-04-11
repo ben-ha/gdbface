@@ -32,8 +32,6 @@ class AssemblyView extends React.Component
 	this.breakpoints = store.Breakpoints;
 	this.instructions = store.Disassembly.Data;
 
-	console.log("GGG");
-	console.log(this.frameinfo);
 	this._PopulateAssemblyContent(this.instructions);
 	this._PopulateGutters();
 

@@ -1,55 +1,53 @@
 import React from 'react';
 import GDBActions from './GDBActions.js';
+import {RegisterDataStoreCallback} from './DataStore.js';
 
 class ControlKeys extends React.Component
 {
 	constructor(props)
 	{
-		super(props);
-		this.state = {paused : false, started : false};
+	    super(props);
+	    this.paused = false;
+	    this.started = false;
 	}
 
-	OnGDBMessage(msg)
-	{
-		if (msg.Data == undefined || msg.Data == null)
-		   return;
+    componentDidMount()
+    {
+	RegisterDataStoreCallback(this._OnDataStoreChanged.bind(this));
+    }
+    
+    _OnDataStoreChanged(store)
+    {
 
-		if (this.state.started == false)
-		{
-			if (msg.Data.running != undefined)
-			   this.setState({started : true});	   
-		}
-		
-		let should_change = (msg.Data.running != undefined) || (msg.Data.stopped != undefined);
+	this.started = store.ProgramState != "NotStarted";
+	this.paused = store.ProgramState == "Stopped";
+    }
 
-		if (should_change)
-			this.setState({paused : msg.Data.stopped != undefined});
-	}
+    _RunOrResumeDebugee()
+    {
+	if (this.started)
+	    GDBActions.ResumeDebugee();
+	else
+	    GDBActions.RunDebugee();
+    }
 
-        _RunOrResumeDebugee()
-	{
-		if (this.state.started)
-		   GDBActions.ResumeDebugee();
-		else
-		   GDBActions.RunDebugee();
-	}
+    _BreakDebugee()
+    {
+	if (this.paused)
+	    return;
 
-	_BreakDebugee()
-	{
-		if (this.state.paused)
-		   return;
+	GDBActions.BreakDebugee();
+    }
 
-		GDBActions.BreakDebugee();
-	}
+    _RestartDebugee()
+    {
+	this._BreakDebugee();
 
-	_RestartDebugee()
-	{
-		this._BreakDebugee();
+	this.started = false;
+	this.paused = false;
 
-		this.setState({started : false, paused : false});
-
-		this._RunOrResumeDebugee();
-	}
+	this._RunOrResumeDebugee();
+    }
 
 	render()
 	{

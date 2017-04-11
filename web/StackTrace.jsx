@@ -1,6 +1,7 @@
 import React from 'react';
 import GDBActions from './GDBActions.js';
 import {RegisterDataStoreCallback} from './DataStore.js';
+import {GetUIProxy} from './UIProxy.js';
 
 class StackTrace extends React.Component {
 
@@ -26,6 +27,13 @@ class StackTrace extends React.Component {
 	this.setState({StackTrace : data.StackTrace});
       }
 
+    OnFrameClick(frame)
+    {
+	GDBActions.SelectStackFrame(frame.level);
+
+	GetUIProxy().OpenSourceFile(frame.fullname, frame.file);
+    }
+
     render() {
       	return (
 
@@ -42,9 +50,9 @@ class StackTrace extends React.Component {
 		{
 		    this.state.StackTrace.map((frame) => { return (
 		    <tr key={frame.level}>
-		    <td>{frame.addr}</td>
-		    <td>{frame.func}</td>
-		    <td>{frame.file + ":" + frame.line}</td>
+		    <td><button className="btn btn-link" onClick={this.OnFrameClick.bind(this, frame)}>{frame.addr}</button></td>
+		    <td><button className="btn btn-link" onClick={this.OnFrameClick.bind(this, frame)}>{frame.func}</button></td>
+		    <td><button className="btn btn-link" onClick={this.OnFrameClick.bind(this, frame)}>{frame.file + ":" + frame.line}</button></td>
 		    </tr>
 		    ) })
 		}

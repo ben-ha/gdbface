@@ -27,6 +27,7 @@ var actions = {
     SET_MEMORY_CHUNK : "set-memory-chunk",
     GET_PROGRAM_STATE : "get-program-state",
     DISASSEMBLE : "disassemble",
+    SELECT_STACK_FRAME : "select-stack-frame",
 }
 
 var uiproxyevents = {

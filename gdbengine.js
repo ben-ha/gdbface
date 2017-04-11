@@ -66,6 +66,7 @@ class GDBEngine
     	this._api.BindAPI(API.actions.GET_PROGRAM_STATE, this.GetProgramState.bind(this));
 	this._api.BindAPI(API.actions.SEND_GDB_CONSOLE_INPUT, this.SendGDBConsoleInput.bind(this));
 	this._api.BindAPI(API.actions.DISASSEMBLE, this.Disassemble.bind(this));
+	this._api.BindAPI(API.actions.SELECT_STACK_FRAME, this.SelectStackFrame.bind(this));
     }
 
     Start()
@@ -280,6 +281,12 @@ class GDBEngine
     {
 	let command = "-stack-list-frames";
 	this._SendCommand(command, "");
+    }
+
+    SelectStackFrame(frame)
+    {
+	let command = "-stack-select-frame";
+	this._SendCommand(command, frame);
     }
 
     GetMemoryChunk(obj)
