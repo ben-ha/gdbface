@@ -5,6 +5,7 @@ import CodeMirror from 'codemirror/lib/codemirror.js';
 import 'codemirror/mode/gas/gas.js';
 import 'codemirror/lib/codemirror.css';
 import {RegisterDataStoreCallback, UnregisterDataStoreCallback, GetDataStore} from './DataStore.js';
+import Utilities from './GUIUtilities/Utilities.js';
 
 class AssemblyView extends React.Component
 {
@@ -49,41 +50,26 @@ class AssemblyView extends React.Component
     {
 	this.editor.clearGutter("breakpoints");
 
-	this._FillBreakpoints();
-
+	let active_line = -1;
+	
 	if (this.programstate == "Stopped" && this.frameinfo != undefined)
 	{
-	    let active_line  = this._FindLineByAddress(this.frameinfo.addr);
+	    active_line  = this._FindLineByAddress(this.frameinfo.addr);
 
 	    if (active_line != -1)
-		this.editor.setGutterMarker(active_line, "breakpoints", this._CreateActiveLineElement(this._GetActiveAddressBreakpoint()));
+		this.editor.setGutterMarker(active_line, "breakpoints", Utilities.CreateLineMarkerElement({active_line : true}));
 	}
-    }
 
-    _FillBreakpoints()
-    {
 	for (let i = 0; i < this.breakpoints.length; ++i)
 	{
 	    let bkpt = this.breakpoints[i];
 
 	    let insn = this.instructions.findIndex((insn) => bkpt.addr == insn.address);
-
+	    
 	    if (insn != -1)
-		this.editor.setGutterMarker(insn, "breakpoints", this._CreateBreakpointElement(bkpt.enabled == "y"));
+		this.editor.setGutterMarker(insn, "breakpoints", Utilities.CreateLineMarkerElement({has_breakpoint : true, breakpoint_enabled : bkpt.enabled == "y", active_line : active_line == insn}));
 	}
-    }
 
-    _GetActiveAddressBreakpoint()
-    {
-	if (this.frameinfo.addr == undefined)
-	    return null;
-
-	let line = this._FindLineByAddress(this.frameinfo.addr);
-
-	if (line == undefined)
-	    return null;
-	
-	return this._FindBreakpointByLine(line);
     }
 
     _FindLineByAddress(address)

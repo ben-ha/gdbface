@@ -4,6 +4,7 @@ import CodeMirror from 'codemirror/lib/codemirror.js';
 import 'codemirror/mode/clike/clike.js';
 import 'codemirror/lib/codemirror.css';
 import {RegisterDataStoreCallback, UnregisterDataStoreCallback, GetDataStore} from './DataStore.js';
+import Utilities from './GUIUtilities/Utilities.js';
 
 class CodeView extends React.Component
 {
@@ -73,33 +74,29 @@ class CodeView extends React.Component
     {
 	this.editor.clearGutter("breakpoints");
 
-	this._FillBreakpoints();
-	
-	if (this.state.frameinfo.fullname == this.GetFullFileName())
-	    if (this.state.programstate == "Stopped")
-		{
-	    this.editor.setGutterMarker(parseInt(this.state.frameinfo.line) - 1, "breakpoints", this._CreateActiveLineElement(this._GetActiveLineBreakpoint()));
-		}
-	
-    }
+		let active_file = (this.state.programstate == "Stopped") && (this.state.frameinfo.fullname == this.GetFullFileName());
 
-    _FillBreakpoints()
-    {
-
+	let seen_breakpoint_on_active_line = false;
+	
 	for (let i = 0; i < this.state.breakpoints.length; ++i)
 	{
 	    let bkpt = this.state.breakpoints[i];
+	    
 	    if (bkpt.fullname == this.GetFullFileName())
-		this.editor.setGutterMarker(parseInt(bkpt.line) - 1, "breakpoints", this._CreateBreakpointElement(bkpt.enabled == "y"));
+		{
+		    let active_line = active_file && (this.state.frameinfo.line == bkpt.line);
+		    if (!seen_breakpoint_on_active_line)
+			seen_breakpoint_on_active_line = active_line; 
+		    let bkpt_state = {has_breakpoint : true, breakpoint_enabled : bkpt.enabled == "y", active_line : active_line};	    
+		this.editor.setGutterMarker(parseInt(bkpt.line) - 1, "breakpoints", Utilities.CreateLineMarkerElement(bkpt_state));
+		}
 	}
-    }
 
-    _GetActiveLineBreakpoint()
-    {
-	if (this.state.frameinfo.line == undefined)
+	if (!active_file || seen_breakpoint_on_active_line)
 	    return;
-	
-	return this._FindBreakpointByLine(this.state.frameinfo.line);
+
+	// We are in the right file and no breakpoint has been put on the active line
+	this.editor.setGutterMarker(parseInt(this.state.frameinfo.line) - 1, "breakpoints", Utilities.CreateLineMarkerElement({active_line : true}));
     }
 
     _FindBreakpointByLine(line)
@@ -112,40 +109,6 @@ class CodeView extends React.Component
 	}
 
 	return null; 
-    }
-
-    _CreateBreakpointElement(enabled)
-    {
-	let wrapping_div = document.createElement("div");
-
-	if (enabled)
-	    wrapping_div.style.color="red";
-	else
-	    wrapping_div.style.color="gray";
-	wrapping_div.innerText="●";
-	return wrapping_div;
-    }
-    
-    _CreateActiveLineElement(active_bkpt)
-    {
-	let wrapping_div = null;
-
-	if (active_bkpt != null)
-	    wrapping_div = this._CreateBreakpointElement(active_bkpt.enabled == "y");
-	else
-	    wrapping_div = document.createElement("div");
-
-	let span = document.createElement("span");
-	span.className="glyphicon glyphicon-arrow-right";
-	span.style.color = "gold";
-	span.style.zIndex = 99;
-	span.style.position = "absolute";
-	span.style.left = "0px";
-	span.style.top="3px";
-
-	wrapping_div.appendChild(span);
-
-	return wrapping_div;
     }
 
     _OnGutterClick(editor, line)
