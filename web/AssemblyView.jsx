@@ -94,41 +94,7 @@ class AssemblyView extends React.Component
 
 	return null; 
     }
-
-    _CreateBreakpointElement(enabled)
-    {
-	let wrapping_div = document.createElement("div");
-
-	if (enabled)
-	    wrapping_div.style.color="red";
-	else
-	    wrapping_div.style.color="gray";
-	wrapping_div.innerText="●";
-	return wrapping_div;
-    }
     
-    _CreateActiveLineElement(active_bkpt)
-    {
-	let wrapping_div = null;
-
-	if (active_bkpt != null)
-	    wrapping_div = this._CreateBreakpointElement(active_bkpt.enabled == "y");
-		else
-	    wrapping_div = document.createElement("div");
-
-	let span = document.createElement("span");
-	span.className="glyphicon glyphicon-arrow-right";
-	span.style.color = "gold";
-	span.style.zIndex = 99;
-	span.style.position = "absolute";
-	span.style.left = "0px";
-	span.style.top="3px";
-
-	wrapping_div.appendChild(span);
-
-	return wrapping_div;
-    }
-
     _OnGutterClick(editor, line)
     {
 	let bkpt = this._FindBreakpointByLine(line);
@@ -177,7 +143,7 @@ class AssemblyView extends React.Component
     {
 	let obj = (
 	<div>
-	    <EditableTextbox WithBorder={true} onChange={this._OnInput.bind(this)}/>
+	    <EditableTextbox WithBorder={true} onChange={this._OnInput.bind(this)} updateOnEnter={true} />
 	    <label className="radio-inline"><input type="radio" name="asmflavor" onChange={this._ChangeDisassemblyFlavor.bind(this,false)} defaultChecked/>AT&T</label>
 	    <label className="radio-inline"><input type="radio" name="asmflavor" onChange={this._ChangeDisassemblyFlavor.bind(this, true)} />Intel</label>
 <div ref="codeview_assemblyview"></div>
