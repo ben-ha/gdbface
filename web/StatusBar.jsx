@@ -41,7 +41,7 @@ class StatusBar extends React.Component {
 	    alert_msg = "Paused";
 	    break;
 	    case "Terminated":
-	    alert_style = "alert_info";
+	    alert_style = "alert-info";
 	    alert_msg = "Terminated";
 	}
 
