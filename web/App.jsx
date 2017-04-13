@@ -1,6 +1,7 @@
 import React from 'react';
 import ControlKeys from './ControlKeys.jsx';
 import TopBar from './TopBar.jsx';
+import StatusBar from './StatusBar.jsx';
 import Dashboard from './Dashboard.jsx';
 import {InitDispatcher, GetDispatcher} from './Dispatcher.js';
 import {InitDataStore} from './DataStore.js';
@@ -22,6 +23,7 @@ class App extends React.Component {
       	 <div style={{"height": "100%"}}>
          <TopBar />
          <ControlKeys />
+	 <StatusBar />
 	 <hr />
 	 <Dashboard   />
 	 </div>
