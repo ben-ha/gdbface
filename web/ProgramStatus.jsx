@@ -45,14 +45,14 @@ class ProgramStatus extends React.Component {
 	    alert_msg = "Terminated";
 	}
 
-	return (<div className={"alert " + alert_style} style={{padding: "1px", "display" : "inline-block"}}>{alert_msg}</div>);
+	return (<span className={"alert " + alert_style} style={{padding: "1px"}}>{alert_msg}</span>);
     }
     
     render() {
       	return (
-		<div>
+		<span>
 	    {this._GetStatusNode()}
-		</div>
+		</span>
 	    );
 }
 }
