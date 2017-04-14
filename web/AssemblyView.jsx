@@ -110,6 +110,8 @@ class AssemblyView extends React.Component
 	
 	this.editor = CodeMirror(this.refs["codeview_assemblyview"], {mode: "gas", architecture: "x86", readOnly : true, lineNumbers: true, lineNumberFormatter: this._CodeMirrorLineNumberFormatter.bind(this), gutters : ["breakpoints"]});
 
+
+	this.editor.setSize(null, "100%");
 	this.editor.on("gutterClick", this._OnGutterClick.bind(this)); 
     }
 
@@ -142,11 +144,11 @@ class AssemblyView extends React.Component
     render()
     {
 	let obj = (
-	<div>
+	<div style={{height:"100%"}}>
 	    <EditableTextbox WithBorder={true} onChange={this._OnInput.bind(this)} updateOnEnter={true} />
 	    <label className="radio-inline"><input type="radio" name="asmflavor" onChange={this._ChangeDisassemblyFlavor.bind(this,false)} defaultChecked/>AT&T</label>
 	    <label className="radio-inline"><input type="radio" name="asmflavor" onChange={this._ChangeDisassemblyFlavor.bind(this, true)} />Intel</label>
-<div ref="codeview_assemblyview"></div>
+<div ref="codeview_assemblyview" style={{height:"90%"}}></div>
         </div>
 );
 	return obj;

@@ -325,7 +325,7 @@ class GDBEngine
     Disassemble(obj)
     {
 	let command="-data-disassemble";
-	let end_address = (obj.end_address != undefined) ? obj.end_address : util.format("%s + 60", obj.start_address);
+	let end_address = (obj.end_address != undefined) ? obj.end_address : util.format("%s + 100", obj.start_address);
 
 	this._SendCommand(command, util.format('-s "%s" -e "%s" -- 0', obj.start_address, end_address));
 	
