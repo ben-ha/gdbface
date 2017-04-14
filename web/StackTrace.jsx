@@ -37,7 +37,9 @@ class StackTrace extends React.Component {
     render() {
       	return (
 
-	  <div>
+	    <div className="panel panel-info">
+		<div className="panel-heading">Call stack</div>
+		<div className="panel-body">
 	   <table className="table table-striped">
 	       <thead>
 		<tr>
@@ -58,6 +60,7 @@ class StackTrace extends React.Component {
 		}
 		</tbody>
 	   </table>
+	   </div>
 	 </div>
         );
      }

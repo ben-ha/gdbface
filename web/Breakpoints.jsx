@@ -19,7 +19,9 @@ class Breakpoints extends React.Component {
     render() {
       	return (
 
-	  <div> 
+	    <div className="panel panel-info">
+		<div className="panel-heading">Breakpoints</div>
+		<div className="panel-body">
 	    <table className="table table-striped">
 	       <thead>
 		<tr>
@@ -36,6 +38,7 @@ class Breakpoints extends React.Component {
 		}
 		</tbody>
 	    </table>
+	    </div>
 	 </div>
         );
      }
