@@ -41,11 +41,11 @@ class ProgramStatus extends React.Component {
 	    alert_msg = "Paused";
 	    break;
 	    case "Terminated":
-	    alert_style = "alert_info";
+	    alert_style = "alert-danger";
 	    alert_msg = "Terminated";
 	}
 
-	return (<div className={"alert " + alert_style} style={{padding: "1px"}}>{alert_msg}</div>);
+	return (<div className={"alert " + alert_style} style={{padding: "1px", "display" : "inline-block"}}>{alert_msg}</div>);
     }
     
     render() {

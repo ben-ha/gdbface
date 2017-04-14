@@ -19,7 +19,7 @@ class ControlKeys extends React.Component
     _OnDataStoreChanged(store)
     {
 
-	this.started = store.ProgramState != "NotStarted";
+	this.started = (store.ProgramState != "NotStarted" && store.ProgramState != "Terminated");
 	this.paused = store.ProgramState == "Stopped";
     }
 
