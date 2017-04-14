@@ -9,6 +9,8 @@ import CodeViewContainer from './CodeViewContainer.jsx';
 import FileExplorer from './FileExplorer.jsx';
 import HexView from './HexView.jsx';
 
+const MAIN_AREA_HEIGHT = "650px";
+
 class Dashboard extends React.Component {
 
     constructor(props)
@@ -18,19 +20,18 @@ class Dashboard extends React.Component {
     }
     
       render() {
-       return (
-       	      <div className="panel panel-default">
-	      <div className="panel-body">
-	       <div id="mainarea" style={{"width":"70%", "float":"left", "minHeight":"80%", "height":"80%", "maxHeight" : "80%"}}>
-	       <div id="dashboard_fileexplorer_div" style={{"overflow" : "auto", "width":"20%", "maxWidth":"20%", "float":"left"}}>
+	  return (
+	      <div>
+	       <div id="mainarea" style={{"width":"70%", "float":"left", "height" : MAIN_AREA_HEIGHT}}>
+	       <div id="dashboard_fileexplorer_div" style={{"overflow" : "auto", "width":"20%", "maxWidth":"20%", "height" : MAIN_AREA_HEIGHT, "float":"left"}}>
 	       <FileExplorer />
 	       </div>
-	       <div id="dashboard_codeview_div" style={{"float":"left","width":"80%"}}>
+	       <div id="dashboard_codeview_div" style={{"float":"left","width":"80%", "height" : MAIN_AREA_HEIGHT}}>
 	       <CodeViewContainer />
 	       </div>
 		</div>
 		
-	       <div id="secarea" style={{"width" : "30%", "height":"80%","float":"left", "overflow" : "auto"}}>
+	       <div id="secarea" style={{"width" : "30%", "height":MAIN_AREA_HEIGHT,"float":"left", "overflow" : "auto"}}>
 		     <Breakpoints />
 		     <LocalVariables />
 		     <Watches />
@@ -54,10 +55,9 @@ class Dashboard extends React.Component {
 		<HexView ElementsInRow={16} />
 		</div>
 		</div>
-		</div>
-</div>
-</div>
-	);
+	       </div>
+	      </div>
+	  );
       }
 }
 

@@ -70,7 +70,7 @@ class CodeViewContainer extends React.Component
 	   
 	let a =
 	(
-	    <div>
+	    <div style={{height:"100%"}}>
 		<ul className="nav nav-tabs">
 		{
 		    this.state.views.map((view) => {return (<li key={view.props.FullFileName} className={(this.state.active_view == view) ? "active" : ""}><a role="tab" data-toggle="tab" href={"#codeview_" + view.props.FileName.replace(".","_")}>{view.props.FileName}<button className="close closeTab" onClick={this.OnCloseTab.bind(this, view)} style={{"fontSize" : "18px", "marginLeft" : "15px", "color" : "red"}}>x</button></a></li>)})
@@ -79,13 +79,13 @@ class CodeViewContainer extends React.Component
 
 		    </ul>
 
-		<div className="tab-content">
+		<div className="tab-content" style={{height:"90%"}}>
 		{
 		this.state.views.map((view) => { return (
-		    <div id={"codeview_"+view.props.FileName.replace(".","_")} className={"tab-pane " + (this.state.active_view == view ? "active" : "")}>{view}</div>)})
+		    <div id={"codeview_"+view.props.FileName.replace(".","_")} className={"tab-pane " + (this.state.active_view == view ? "active" : "")} style={{height:"100%"}}>{view}</div>)})
 		    }
 
-		    <div id="codeview_assemblyview" className="tab-pane">
+		    <div id="codeview_assemblyview" className="tab-pane" style={{height:"100%"}}>
 			<AssemblyView />
 		    </div>
 	    

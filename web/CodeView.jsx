@@ -124,6 +124,7 @@ class CodeView extends React.Component
     {
 	this.editor = CodeMirror(this.refs["codeview_"+this.state.fullfilename], {mode: "text/x-c++src", readOnly : true, lineNumbers: true, gutters : ["breakpoints"]});
 
+	this.editor.setSize(null, "100%");
 	this.editor.on("gutterClick", this._OnGutterClick.bind(this)); 
 	this._InitializeCodeViewIfNeeded(GetDataStore().Store);
     }
@@ -135,7 +136,7 @@ class CodeView extends React.Component
     
     render()
     {
-	let obj = <div ref={"codeview_"+this.state.fullfilename}></div>;
+	let obj = <div ref={"codeview_"+this.state.fullfilename} style={{position:"relative", height: "100%"}}></div>;
 
 	return obj;
     }
