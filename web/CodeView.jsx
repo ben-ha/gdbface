@@ -165,7 +165,7 @@ class CodeView extends React.Component
 	    element._tooltipContent.Reevaluate();
 
 	    element._timeout_executing = false;
-	    });
+	    }, 1000);
     }
     
     _OnVariableMouseOut(element)
