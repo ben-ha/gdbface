@@ -2,8 +2,6 @@
 
 var engine = require("./engine.js");
 
-var port = 5555;
-
 var params = {};
 
 if (process.argv[2] == "-p")
@@ -16,4 +14,4 @@ else
 	params["args"] = process.argv.slice(3).join(" ");
 }
 
-engine.run(port, params);
+engine.run(params);
