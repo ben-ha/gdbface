@@ -45,6 +45,7 @@ class DataStore
 		LocalVariables : [],
 		StackTrace : [],
 		Watches : {},
+		Expression : {},
 		Disassembly : {Changed : false, Data : []},
 		HexView : {Address : null, Hash: "", Memory:"", Changed : false},
 	    };
@@ -238,8 +239,11 @@ class DataStore
     {
 	if (data.Data.WatchID == "" || data.Data.WatchID == undefined)
 	    return;
-	
-	this.Store.Watches[data.Data.WatchID] = data.Data.value;
+
+	if (data.Data.WatchID.startsWith("Watch-"))
+	    this.Store.Watches[data.Data.WatchID] = data.Data.value;
+	else
+	    this.Store.Expression = {"ID" : data.Data.WatchID, "Data" : data.Data.value};
     }
 
     _NotifyRegisteredModules()

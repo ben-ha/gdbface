@@ -1,10 +1,13 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import GDBActions from './GDBActions.js';
 import CodeMirror from 'codemirror/lib/codemirror.js';
 import 'codemirror/mode/clike/clike.js';
 import 'codemirror/lib/codemirror.css';
 import {RegisterDataStoreCallback, UnregisterDataStoreCallback, GetDataStore} from './DataStore.js';
 import Utilities from './GUIUtilities/Utilities.js';
+import Tooltip from './GUIUtilities/Tooltip/Tooltip.jsx';
+import VariableTooltip from './VariableTooltip.jsx';
 
 class CodeView extends React.Component
 {
@@ -42,6 +45,7 @@ class CodeView extends React.Component
 		this.sent_code_request = true;
 		this.editor.doc.setValue(store.Sources[this.GetFullFileName()]);
 		this.editor.refresh();
+		this._InitializeTooltips();
 		this.got_code = true;
 		return;
 	    }
@@ -55,9 +59,6 @@ class CodeView extends React.Component
     
     _OnDataStoreChanged(store)
     {
-	if (this.editor !=null)
-	    this.editor.refresh();
-	
 	this._InitializeCodeViewIfNeeded(store);
 	this._PopulateControl(store);
     }
@@ -118,6 +119,63 @@ class CodeView extends React.Component
 	    GDBActions.AddBreakpointBySource(this.GetFullFileName(), line + 1);
 	else
 	    GDBActions.RemoveBreakpoint(bkpt.number);
+    }
+
+    _InitializeTooltips()
+    {
+	let root_node = this.refs["codeview_"+this.state.fullfilename];
+
+	let elements = root_node.getElementsByClassName("cm-variable");
+
+	for (let i = 0; i < elements.length; ++i)
+	    {
+		elements[i].onmouseover = () => this._OnVariableMouseOver.bind(this)(elements[i]);
+		elements[i].onmouseout = () => this._OnVariableMouseOut.bind(this)(elements[i]);
+	    }
+    }
+
+    _OnVariableMouseOver(element)
+    {
+	element._hovering = true;
+	
+	if (element._tooltip == undefined)
+	    {
+		let tooltip_span = document.createElement("span");
+		element.appendChild(tooltip_span);
+		element.style.position = "relative";
+
+		element._tooltip = ReactDOM.render((<Tooltip></Tooltip>), tooltip_span);
+
+		element._tooltipContent = ReactDOM.render((<VariableTooltip Expression={element.firstChild.data} />), ReactDOM.findDOMNode(element._tooltip));
+	    }
+
+	if (element._timeout_executing)
+	    return;
+
+	element._timeout_executing = true;
+	
+	setTimeout(() => {    
+	    if (!element._hovering)
+		{
+		    element._timeout_executing = false;
+		    return;
+		}
+
+	    element._tooltip.Display();
+	    element._tooltipContent.Reevaluate();
+
+	    element._timeout_executing = false;
+	    });
+    }
+    
+    _OnVariableMouseOut(element)
+    {
+	element._hovering = false;
+	
+	if (element._tooltip == undefined)
+	    return;
+
+	element._tooltip.Hide();
     }
     
     componentDidMount()

@@ -38,9 +38,9 @@ class Watches extends React.Component {
 		</thead>
 		<tbody>
 		{
-		    Object.keys(this.state.watches).map((wid) => { return (<Watch key={wid} ID={ wid.toString()} expression={this.expressions[wid]} value={this.state.watches[wid].value} onExpressionChange={this._OnExpressionChange.bind(this)} />) })
+		    Object.keys(this.state.watches).map((wid) => { return (<Watch key={wid} ID={ "Watch-" + wid.toString()} expression={this.expressions[wid]} value={this.state.watches[wid].value} onExpressionChange={this._OnExpressionChange.bind(this)} />) })
 		}
-		<Watch key={Object.keys(this.state.watches).length} ID={Object.keys(this.state.watches).length} onExpressionChange={this._OnExpressionChange.bind(this)}/>
+		<Watch key={Object.keys(this.state.watches).length} ID={"Watch-" + Object.keys(this.state.watches).length} onExpressionChange={this._OnExpressionChange.bind(this)}/>
 		</tbody>
            </table>
 	   </div>
