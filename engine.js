@@ -16,7 +16,7 @@ function run(port, params)
     var io = require('socket.io')(server);
     
 
-    app.use(express.static(path.join(__dirname, "dist")));
+    app.use(express.static(path.join(__dirname, "client")));
 
     
     var gdb_engine = new GDBEngine(params);
