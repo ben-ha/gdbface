@@ -31,12 +31,13 @@ Edit memory:
 
 ## Installing
 
-   1. npm install gdbface -g
+   1. ```npm install gdbface -g```
 
 ## Usage
 
-   1. gdbface <path to program> [args]
-   2. gdbface -p <pid>
+   1. ```gdbface <path to program> [args]```
+   2. ```gdbface -p <pid>```
+   
    Note: Best works on programs compiled with -g flag
    
 ## License
