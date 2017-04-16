@@ -10,7 +10,7 @@ function PrintUsage()
 	console.log("\tgdbface -p <pid>");
 }
 
-if (process.argv[2] == "--help" || process.argv[2] == "-h")
+if (process.argv.length == 2 || process.argv[2] == "--help" || process.argv[2] == "-h")
 {
 	PrintUsage();
 	process.exit();		
