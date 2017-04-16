@@ -18,16 +18,16 @@ Currently implemented features:
 
 Source debugging with tooltips over variables:
 
-![Source debugging](/docs/screenshots/src_debug.png?raw=true "Source debugging with program console")
+![Source debugging](https://github.com/ben-ha/gdbface/raw/master/docs/screenshots/src_debug.png?raw=true "Source debugging with program console")
 Interact with the debugged program:
 
-![Program console](/docs/screenshots/program_console.png?raw=true "Program console")
+![Program console](https://github.com/ben-ha/gdbface/raw/master/docs/screenshots/program_console.png?raw=true "Program console")
 Assembly view:
 
-![Assembly view](/docs/screenshots/asm.png?raw=true "Assembly view")
+![Assembly view](https://github.com/ben-ha/gdbface/raw/master/docs/screenshots/asm.png?raw=true "Assembly view")
 Edit memory:
 
-![Hex view](/docs/screenshots/hex.png?raw=true "Hex view")
+![Hex view](https://github.com/ben-ha/gdbface/raw/master/docs/screenshots/hex.png?raw=true "Hex view")
 
 ## Installing
 
