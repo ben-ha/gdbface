@@ -1,6 +1,6 @@
 {
   "name": "gdbface",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "GDB frontend",
   "bin": {"gdbface" : "./gdbface.js"},
   "scripts": {
@@ -10,11 +10,11 @@
 },
   "repository": {
     "type": "git",
-    "url": "git+https://github.org/ben-ha/gdbface.git"
+    "url": "git+https://github.com/ben-ha/gdbface.git"
   },
   "author": "Ben-Ha",
   "license": "MIT",
-  "homepage": "https://github.org/ben-ha/gdbface",
+  "homepage": "https://github.com/ben-ha/gdbface",
   "dependencies": {
     "bootstrap": "^3.3.7",
     "codemirror": "^5.22.0",
