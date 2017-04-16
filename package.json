@@ -1,7 +1,7 @@
 {
   "name": "gdbface",
-  "version": "1.0.0",
-  "description": "GDB Frontend",
+  "version": "1.0.1",
+  "description": "GDB frontend",
   "bin": {"gdbface" : "./gdbface.js"},
   "scripts": {
 	"prebuild" : "rm -rf client; mkdir client;",
