@@ -17,18 +17,24 @@ Currently implemented features:
 ## Screenshots
 
 Source debugging with tooltips over variables:
+
 ![Source debugging](/docs/screenshots/src_debug.png?raw=true "Source debugging with program console")
 Interact with the debugged program:
+
 ![Program console](/docs/screenshots/program_console.png?raw=true "Program console")
 Assembly view:
+
 ![Assembly view](/docs/screenshots/asm.png?raw=true "Assembly view")
 Edit memory:
+
 ![Hex view](/docs/screenshots/hex.png?raw=true "Hex view")
 
 ## Installing
+
    1. npm install gdbface -g
 
 ## Usage
+
    1. gdbface <path to program> [args]
    2. gdbface -p <pid>
    Note: Best works on programs compiled with -g flag
