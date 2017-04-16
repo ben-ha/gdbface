@@ -7,7 +7,7 @@ module.exports = {"run": run};
 
 var client_contexts = [];
 
-function run(port, params)
+function run(params)
 {
     var server = express();
 
@@ -32,5 +32,8 @@ function run(port, params)
 	});
        
     
-    server.listen(port);
+    server.listen(0, () => {
+	console.log("Listening on: " + server.address().port);
+	console.log("Fire up your favorite browser and connect");
+});
 }
