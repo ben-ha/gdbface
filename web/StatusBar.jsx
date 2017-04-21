@@ -21,7 +21,7 @@ class StatusBar extends React.Component {
 
     render() {
       	return (
-	    <div className="row">
+	    <div className="row" style={{"height":this.props.Height}}>
 		<div className="col-sm-2">
 		    <span className="alert alert-info" style={{padding: "1px", marginRight: "5px"}}>Program status:</span>
 		    <ProgramStatus />

@@ -52,7 +52,7 @@ class ControlKeys extends React.Component
 	render()
 	{
 		return (
-		<div className="row">
+		<div className="row" style={{"height":this.props.Height}}>
 			<div className="col-sm-2">
 			<div className="btn-group">
 			<button className="btn btn-primary" onClick={this._RunOrResumeDebugee.bind(this)}>

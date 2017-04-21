@@ -76,7 +76,7 @@ class PlainConsole extends React.Component
 	// TODO: Fix to use EditableTextbox instead of an input that handles Enter key
 	   return (
 		<div className="form-group">
-		   <textarea className="form-control" rows="3" id={"console_" + this.store_member} value={this.state.output} readOnly/>
+		   <textarea className="form-control" rows="4" id={"console_" + this.store_member} value={this.state.output} readOnly/>
 		   <input className="form-control" type="text" value={this.state.input} onChange={this._OnChange.bind(this)} onKeyDown={this._OnKeyDown.bind(this)} />
 		</div>
 		    );

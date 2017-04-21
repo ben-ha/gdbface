@@ -21,11 +21,11 @@ class App extends React.Component {
       render() {
       return (
       	 <div style={{"height": "100vh"}}>
-         <TopBar Height="8vh" FontSize="5vh" />
-         <ControlKeys />
-	 <StatusBar />
+         <TopBar Height="8%" FontSize="5vh" />
+         <ControlKeys Height="5%" />
+	 <StatusBar Height="5%"/>
 	 <hr />
-	 <Dashboard   />
+	 <Dashboard Height="82%" />
 	 </div>
       );
    }

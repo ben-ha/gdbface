@@ -18,11 +18,7 @@ class ProgramConsole extends React.Component
 
     render()
     {
-	   return (
-		<div className="form-group">
-		    <PlainConsole Output="ProgramConsoleOutput" OnNewLine={this._OnNewLine.bind(this)} MaxLength={1024} />
-		</div>
-		    );
+	   return (<PlainConsole Output="ProgramConsoleOutput" OnNewLine={this._OnNewLine.bind(this)} MaxLength={1024} />);
 	}
 }
 
