@@ -20,8 +20,8 @@ class App extends React.Component {
 
       render() {
       return (
-      	 <div style={{"height": "100%"}}>
-         <TopBar />
+      	 <div style={{"height": "100vh"}}>
+         <TopBar Height="8vh" FontSize="5vh" />
          <ControlKeys />
 	 <StatusBar />
 	 <hr />
